@@ -587,6 +587,33 @@
             box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
         }
 
+        .form-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            display: none;
+            background: #27ae60;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .error-message {
+            display: none;
+            background: #e74c3c;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
         /* Footer */
         footer {
             background: #2c3e50;
@@ -1142,6 +1169,13 @@
             </div>
 
             <div class="form-container">
+                <div class="success-message" id="successMessage">
+                    ✓ Teşekkür ederiz! Öneriniz başarıyla gönderilmiştir. Kıtmir Robot topluluğu tarafından değerlendirilecektir.
+                </div>
+                <div class="error-message" id="errorMessage">
+                    ✗ Hata! Lütfen daha sonra tekrar deneyiniz.
+                </div>
+
                 <form id="suggestionForm">
                     <div class="form-group">
                         <label for="name">Adınız / Takım Adı</label>
@@ -1228,26 +1262,7 @@
                         <textarea id="implementation" name="implementation" placeholder="Eğer teknik bilginiz varsa, bu önerinin nasıl uygulanabileceği hakkında fikirlerinizi paylaşın"></textarea>
                     </div>
 
-                    <div class="form-group">
-                        <label for="priority">Öncelik Seviyesi</label>
-                        <select id="priority" name="priority">
-                            <option value="low">Düşük (İleride düşünülebilir)</option>
-                            <option value="medium" selected>Orta (Önemli)</option>
-                            <option value="high">Yüksek (Çok Önemli)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="contact">İletişim Tercihi</label>
-                        <select id="contact" name="contact">
-                            <option value="email">E-posta</option>
-                            <option value="github">GitHub</option>
-                            <option value="discord">Discord</option>
-                            <option value="qq">QQ Grubu</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="form-submit">Önerinizi Gönder</button>
+                    <button type="submit" class="form-submit" id="submitBtn">Önerinizi Gönder</button>
                 </form>
             </div>
         </div>
@@ -1324,8 +1339,16 @@
         });
 
         // Form submission
-        document.getElementById('suggestionForm').addEventListener('submit', function(e) {
+        document.getElementById('suggestionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Mesajları gizle
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
             
             // Form verilerini topla
             const formData = {
@@ -1336,19 +1359,55 @@
                 description: document.getElementById('description').value,
                 benefits: document.getElementById('benefits').value,
                 implementation: document.getElementById('implementation').value,
-                priority: document.getElementById('priority').value,
-                contact: document.getElementById('contact').value,
-                areas: Array.from(document.querySelectorAll('input[name="areas"]:checked')).map(el => el.value)
+                areas: Array.from(document.querySelectorAll('input[name="areas"]:checked')).map(el => el.value),
+                submittedAt: new Date().toLocaleString('tr-TR')
             };
 
-            // Tarayıcı konsolunda göster (gerçek uygulamada sunucuya gönderilir)
-            console.log('Form Gönderimi:', formData);
-            
-            // Kullanıcıya başarı mesajı göster
-            alert('Teşekkür ederiz! Öneriniz başarıyla alınmıştır. Kıtmir Robot topluluğu tarafından değerlendirilecektir.');
-            
-            // Formu sıfırla
-            this.reset();
+            // Butonu devre dışı bırak
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Gönderiliyor...';
+
+            try {
+                // EmailJS kütüphanesini yükle
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js';
+                document.head.appendChild(script);
+
+                script.onload = function() {
+                    // EmailJS'i başlat (PUBLIC KEY)
+                    emailjs.init('YOUR_PUBLIC_KEY_HERE');
+
+                    // E-posta gönder
+                    emailjs.send('service_kitmir', 'template_kitmir', {
+                        to_email: 'yesilyurtisa58@gmail.com',
+                        from_name: formData.name,
+                        from_email: formData.email,
+                        category: formData.category,
+                        title: formData.title,
+                        description: formData.description,
+                        benefits: formData.benefits,
+                        implementation: formData.implementation,
+                        areas: formData.areas.join(', '),
+                        submitted_at: formData.submittedAt
+                    }).then(function(response) {
+                        console.log('E-posta başarıyla gönderildi!', response);
+                        successMessage.style.display = 'block';
+                        document.getElementById('suggestionForm').reset();
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Önerinizi Gönder';
+                    }, function(error) {
+                        console.log('E-posta gönderme hatası:', error);
+                        errorMessage.style.display = 'block';
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Önerinizi Gönder';
+                    });
+                };
+            } catch (error) {
+                console.error('Hata:', error);
+                errorMessage.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Önerinizi Gönder';
+            }
         });
 
         // Fade in animation on scroll
