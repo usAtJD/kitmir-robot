@@ -590,27 +590,33 @@
             }
         }
     
-        /* Status Message Styles */
-        .status-message {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-weight: 600;
-            text-align: center;
+        /* PROFESSIONAL STATUS MESSAGES */
+        #formStatus {
             display: none;
-            font-size: 1rem;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: slideDown 0.4s ease-out;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .status-success {
             display: block !important;
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background-color: #d4edda !important;
+            color: #155724 !important;
+            border: 2px solid #c3e6cb !important;
         }
         .status-error {
             display: block !important;
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background-color: #f8d7da !important;
+            color: #721c24 !important;
+            border: 2px solid #f5c6cb !important;
         }
 
     </style>
@@ -895,33 +901,19 @@
     </section>
 
     <!-- Suggestions Section -->
+    
     <section id="suggestions">
         <div class="container">
-            <h2>Öneriler &amp; Geri Bildirim</h2>
-            <p style="text-align: center; margin-bottom: 30px; font-size: clamp(0.95em, 2vw, 1.1em); color: #666;">
-                Kıtmir'i daha iyi hale getirmek için önerilerinizi paylaşın. 
-                Hangi yeni özellikler eklenebilir? Neleri geliştirmek istersiniz?
-            </p>
-
+            <h2>Öneriler & Geri Bildirim</h2>
             <div class="form-container">
-                <div class="success-message" id="successMessage">
-                    ✓ Teşekkürler! Öneriniz başarıyla gönderildi. En kısa sürede gözden geçireceğiz.
-                </div>
-                <div class="error-message" id="errorMessage">
-                    ✗ Hata! Lütfen tüm alanları doldurunuz ve tekrar deneyin.
-                </div>
-
                 <div class="form-info">
-                    <strong>💡 İpucu:</strong> Lütfen detaylı ve yapıcı öneriler yazınız. 
-                    Örneğin: "Kıtmir'e görüntü tanıma özelliği eklenebilir", 
-                    "Mobil uygulama geliştirilebilir" vb.
+                    Kıtmir'i daha iyi hale getirmek için önerilerinizi paylaşın. Önerileriniz doğrudan geliştirici ekibine iletilecektir.
                 </div>
 
-                
-                <div id="formStatus" class="status-message"></div>
+                <div id="formStatus"></div>
+
                 <form id="suggestionsForm" action="https://formspree.io/f/xyzkvper" method="POST">
-                    <!-- User's email as target -->
-                    <input type="hidden" name="_to" value="yesilyurtisa58@gmail.com">
+                    <input type="hidden" name="_subject" value="Kıtmir'den Yeni Bir Öneri Var!">
                     
                     <div class="form-group">
                         <label for="name">Ad Soyad *</label>
@@ -935,10 +927,10 @@
 
                     <button type="submit" class="submit-btn" id="submitBtn">Öneriyi Gönder</button>
                 </form>
-
             </div>
         </div>
     </section>
+
 
     <!-- Footer -->
     <footer>
@@ -951,61 +943,76 @@
     
     
     
+
+
+
     <script>
+        // FORM SUBMISSION LOGIC
         const form = document.getElementById('suggestionsForm');
         const status = document.getElementById('formStatus');
         const btn = document.getElementById('submitBtn');
 
-        form.addEventListener("submit", async function(event) {
-            event.preventDefault();
-            
-            btn.disabled = true;
-            btn.innerText = "Gönderiliyor...";
-            status.className = "status-message";
-            status.innerText = "";
+        if (form) {
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+                
+                // Visual feedback
+                btn.disabled = true;
+                btn.innerText = "Gönderiliyor...";
+                status.style.display = "none";
+                status.className = "";
 
-            const formData = new FormData(form);
-            
-            try {
-                const response = await fetch(form.action, {
+                const data = new FormData(form);
+                
+                fetch(form.action, {
                     method: 'POST',
-                    body: formData,
+                    body: data,
                     headers: {
                         'Accept': 'application/json'
                     }
+                }).then(response => {
+                    if (response.ok) {
+                        status.innerText = "✓ Öneriniz başarıyla gönderildi! Teşekkür ederiz.";
+                        status.className = "status-success";
+                        form.reset();
+                        // Smooth scroll to message
+                        status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    } else {
+                        return response.json().then(data => {
+                            if (Object.hasOwn(data, 'errors')) {
+                                status.innerText = "Hata: " + data["errors"].map(error => error["message"]).join(", ");
+                            } else {
+                                status.innerText = "✗ Gönderim sırasında bir sorun oluştu. Lütfen tekrar deneyin.";
+                            }
+                            status.className = "status-error";
+                        });
+                    }
+                }).catch(error => {
+                    status.innerText = "✗ Bağlantı hatası! Lütfen internetinizi kontrol edip tekrar deneyin.";
+                    status.className = "status-error";
+                }).finally(() => {
+                    btn.disabled = false;
+                    btn.innerText = "Öneriyi Gönder";
                 });
+            });
+        }
 
-                if (response.ok) {
-                    status.innerText = "✓ Öneriniz başarıyla gönderildi! Teşekkür ederiz.";
-                    status.className = "status-message status-success";
-                    form.reset();
-                    status.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                } else {
-                    status.innerText = "✗ Gönderim sırasında bir sorun oluştu. Lütfen tekrar deneyin.";
-                    status.className = "status-message status-error";
-                }
-            } catch (error) {
-                status.innerText = "✗ Bağlantı hatası! Lütfen internetinizi kontrol edin.";
-                status.className = "status-message status-error";
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "Öneriyi Gönder";
-            }
-        });
-
-        // Smooth scroll
+        // SMOOTH SCROLLING
         document.querySelectorAll('nav a').forEach(link => {
             link.addEventListener('click', function(e) {
                 const targetId = this.getAttribute('href');
-                if (targetId.startsWith('#')) {
+                if (targetId && targetId.startsWith('#')) {
                     e.preventDefault();
-                    const target = document.querySelector(targetId);
-                    if (target) target.scrollIntoView({ behavior: 'smooth' });
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
                 }
             });
         });
     </script>
-
-
 
 </body></html>
