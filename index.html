@@ -589,22 +589,19 @@
                 padding: 10px 8px;
             }
         }
-    
-        /* PROFESSIONAL STATUS MESSAGES */
-        #formStatus {
+    </style>
+
+    <style>
+        #statusMessage {
             display: none;
             padding: 15px;
-            margin-bottom: 20px;
+            margin: 20px auto;
+            max-width: 600px;
             border-radius: 8px;
             text-align: center;
             font-weight: bold;
             font-size: 1.1em;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            animation: slideDown 0.4s ease-out;
-        }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .status-success {
             display: block !important;
@@ -618,8 +615,8 @@
             color: #721c24 !important;
             border: 2px solid #f5c6cb !important;
         }
-
     </style>
+
 </head>
 <body>
     <!-- Header -->
@@ -910,10 +907,11 @@
                     Kıtmir'i daha iyi hale getirmek için önerilerinizi paylaşın. Önerileriniz doğrudan geliştirici ekibine iletilecektir.
                 </div>
 
-                <div id="formStatus"></div>
+                <div id="statusMessage"></div>
 
                 <form id="suggestionsForm" action="https://formspree.io/f/xyzkvper" method="POST">
-                    <input type="hidden" name="_subject" value="Kıtmir'den Yeni Bir Öneri Var!">
+                    <input type="hidden" name="_subject" value="Kıtmir'den Yeni Öneri!">
+                    <input type="hidden" name="_replyto" value="noreply@kitmir.local">
                     
                     <div class="form-group">
                         <label for="name">Ad Soyad *</label>
@@ -947,71 +945,56 @@
 
 
     <script>
-        // FORM SUBMISSION LOGIC
         const form = document.getElementById('suggestionsForm');
-        const status = document.getElementById('formStatus');
+        const status = document.getElementById('statusMessage');
         const btn = document.getElementById('submitBtn');
 
-        if (form) {
-            form.addEventListener("submit", function(event) {
-                event.preventDefault();
-                
-                // Visual feedback
-                btn.disabled = true;
-                btn.innerText = "Gönderiliyor...";
-                status.style.display = "none";
-                status.className = "";
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            
+            // Loading state
+            btn.disabled = true;
+            btn.innerText = "Gönderiliyor...";
+            status.style.display = "none";
+            status.className = "";
 
-                const data = new FormData(form);
-                
-                fetch(form.action, {
+            const data = new FormData(form);
+            
+            try {
+                const response = await fetch(form.action, {
                     method: 'POST',
                     body: data,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                }).then(response => {
-                    if (response.ok) {
-                        status.innerText = "✓ Öneriniz başarıyla gönderildi! Teşekkür ederiz.";
-                        status.className = "status-success";
-                        form.reset();
-                        // Smooth scroll to message
-                        status.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    } else {
-                        return response.json().then(data => {
-                            if (Object.hasOwn(data, 'errors')) {
-                                status.innerText = "Hata: " + data["errors"].map(error => error["message"]).join(", ");
-                            } else {
-                                status.innerText = "✗ Gönderim sırasında bir sorun oluştu. Lütfen tekrar deneyin.";
-                            }
-                            status.className = "status-error";
-                        });
-                    }
-                }).catch(error => {
-                    status.innerText = "✗ Bağlantı hatası! Lütfen internetinizi kontrol edip tekrar deneyin.";
-                    status.className = "status-error";
-                }).finally(() => {
-                    btn.disabled = false;
-                    btn.innerText = "Öneriyi Gönder";
+                    headers: { 'Accept': 'application/json' }
                 });
-            });
-        }
 
-        // SMOOTH SCROLLING
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const targetId = this.getAttribute('href');
-                if (targetId && targetId.startsWith('#')) {
-                    e.preventDefault();
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
+                if (response.ok) {
+                    status.innerText = "✓ Öneriniz başarıyla gönderildi! Teşekkür ederiz.";
+                    status.className = "status-success";
+                    form.reset();
+                    status.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    const result = await response.json();
+                    status.innerText = "✗ Gönderim hatası: " + (result.errors ? result.errors[0].message : "Lütfen tekrar deneyin.");
+                    status.className = "status-error";
                 }
-            });
+            } catch (err) {
+                status.innerText = "✗ Bağlantı hatası! Lütfen internetinizi kontrol edin.";
+                status.className = "status-error";
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Öneriyi Gönder";
+            }
+        };
+
+        // Original navigation smooth scroll
+        document.querySelectorAll('nav a').forEach(link => {
+            link.onclick = function(e) {
+                const href = this.getAttribute('href');
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+                }
+            };
         });
     </script>
 
