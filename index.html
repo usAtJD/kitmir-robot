@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
+<!DOCTYPE html><html lang="tr"><head manus-helper-ready="true">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kıtmir Robot - ESP32 Sesli Asistan | Profesyonel Yapay Zeka Çözümü</title>
-    <meta name="description" content="Kıtmir Robot, MCP protokolü kullanan, Qwen ve DeepSeek ile güçlendirilmiş ESP32 tabanlı profesyonel sesli sohbet robotu. 70+ donanım desteği, çok dil, akıllı ev kontrolü ve IoT entegrasyonu.">
-    <meta name="keywords" content="Kıtmir Robot, ESP32, sesli asistan, sohbet robotu, MCP, yapay zeka, IoT, akıllı ev">
+    <title>Kıtmir - Yapay Zeka Asistanı Robotu</title>
     <style>
         * {
             margin: 0;
@@ -14,1155 +10,583 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.7;
-            color: #2c3e50;
-            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
         }
 
-        /* Header ve Navigasyon */
+        /* Header */
         header {
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1rem 0;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: clamp(2em, 8vw, 3em);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-size: clamp(1em, 4vw, 1.3em);
+            opacity: 0.95;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: #fff;
+            padding: 15px 0;
             position: sticky;
             top: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             z-index: 100;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: clamp(15px, 3vw, 30px);
+            padding: 0 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            font-size: clamp(0.85em, 2vw, 1em);
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #764ba2;
+        }
+
+        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
+        /* Section Styles */
+        section {
+            padding: clamp(40px, 8vw, 60px) 20px;
+            margin: 20px 0;
         }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            letter-spacing: -0.5px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        .nav-links a:hover {
-            opacity: 0.8;
-            border-bottom: 2px solid white;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-            color: white;
-            padding: 7rem 0;
+        section h2 {
+            font-size: clamp(1.8em, 6vw, 2.2em);
+            margin-bottom: 30px;
+            color: #667eea;
             text-align: center;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-            line-height: 1.2;
+        section h3 {
+            font-size: clamp(1.2em, 4vw, 1.5em);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: #764ba2;
         }
 
-        .hero-subtitle {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            opacity: 0.95;
-            font-weight: 300;
+        /* About Section */
+        #about {
+            background-color: #fff;
         }
 
-        .hero-description {
-            font-size: 1.1rem;
-            margin-bottom: 2.5rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.8;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: white;
-            color: #2c3e50;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-
-        .btn-secondary:hover {
-            background: white;
-            color: #2c3e50;
-        }
-
-        /* Bölüm Başlıkları */
-        .section-title {
-            font-size: 2.8rem;
-            text-align: center;
-            margin-bottom: 1rem;
-            color: #2c3e50;
-            font-weight: 700;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            color: #7f8c8d;
-            font-size: 1.1rem;
-            margin-bottom: 3rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.8;
-        }
-
-        /* Giriş Bölümü */
-        .introduction {
-            padding: 5rem 0;
-            background: white;
-        }
-
-        .intro-content {
+        .about-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: start;
+            gap: 40px;
+            align-items: center;
         }
 
-        .intro-text h2 {
-            font-size: 2.2rem;
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
+        .about-text p {
+            margin-bottom: 15px;
+            font-size: clamp(0.95em, 2vw, 1.1em);
+            line-height: 1.8;
         }
 
-        .intro-text p {
-            color: #555;
-            margin-bottom: 1.5rem;
-            line-height: 1.9;
-            font-size: 1.05rem;
+        .about-text ul {
+            margin-left: 20px;
+            margin-top: 10px;
         }
 
-        .intro-highlights {
-            background: #ecf0f1;
-            padding: 2rem;
-            border-radius: 10px;
-            border-left: 4px solid #3498db;
+        .about-text li {
+            margin-bottom: 8px;
+            font-size: clamp(0.9em, 2vw, 1em);
         }
 
-        .intro-highlights h3 {
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
+        .about-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            font-size: clamp(3em, 15vw, 4em);
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
-        .intro-highlights ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .intro-highlights li {
-            padding: 0.7rem 0;
-            color: #555;
-            border-bottom: 1px solid #bdc3c7;
-        }
-
-        .intro-highlights li:last-child {
-            border-bottom: none;
-        }
-
-        .intro-highlights li::before {
-            content: '→ ';
-            color: #3498db;
-            font-weight: bold;
-            margin-right: 0.8rem;
-        }
-
-        /* Özellikler Bölümü */
-        .features {
-            padding: 5rem 0;
-            background: #f5f7fa;
+        /* Features Section */
+        #features {
+            background-color: #f8f9fa;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
         }
 
         .feature-card {
             background: white;
-            padding: 2.5rem;
+            padding: clamp(20px, 4vw, 30px);
             border-radius: 10px;
-            border-left: 5px solid #3498db;
-            transition: all 0.3s;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
         }
 
         .feature-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
         }
 
         .feature-icon {
-            font-size: 2.8rem;
-            margin-bottom: 1rem;
+            font-size: clamp(2.5em, 8vw, 3em);
+            margin-bottom: 15px;
         }
 
         .feature-card h3 {
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
-            font-weight: 600;
+            margin-top: 0;
+            color: #667eea;
+            font-size: clamp(1.1em, 3vw, 1.3em);
         }
 
         .feature-card p {
             color: #666;
-            line-height: 1.8;
-            font-size: 1rem;
-        }
-
-        /* Teknik Mimarı */
-        .architecture {
-            padding: 5rem 0;
-            background: white;
-        }
-
-        .arch-content {
-            background: linear-gradient(135deg, #f5f7fa 0%, #ecf0f1 100%);
-            padding: 3rem;
-            border-radius: 12px;
-            border: 2px solid #3498db30;
-        }
-
-        .arch-description {
-            color: #555;
-            line-height: 1.9;
-            margin-bottom: 2rem;
-            font-size: 1.05rem;
-        }
-
-        .arch-flow {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-wrap: wrap;
-            margin: 2.5rem 0;
-            gap: 1rem;
-        }
-
-        .arch-box {
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-            color: white;
-            padding: 1.8rem;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 600;
-            min-width: 180px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .arrow {
-            font-size: 2rem;
-            color: #3498db;
-            font-weight: bold;
-        }
-
-        /* Protokoller Tablosu */
-        .protocols {
-            padding: 5rem 0;
-            background: #f5f7fa;
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table thead {
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-            color: white;
-        }
-
-        table th {
-            padding: 1.5rem;
-            text-align: left;
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-
-        table td {
-            padding: 1.5rem;
-            border-bottom: 1px solid #ecf0f1;
-            color: #555;
-        }
-
-        table tbody tr:hover {
-            background: #f9fafb;
-        }
-
-        /* Donanım Bölümü */
-        .hardware {
-            padding: 5rem 0;
-            background: white;
-        }
-
-        .hardware-description {
-            background: #ecf0f1;
-            padding: 2rem;
-            border-radius: 10px;
-            margin-bottom: 3rem;
-            border-left: 4px solid #3498db;
-        }
-
-        .hardware-description p {
-            color: #555;
-            line-height: 1.9;
-            font-size: 1.05rem;
-        }
-
-        .hardware-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .hardware-item {
-            background: linear-gradient(135deg, #ecf0f1 0%, #f5f7fa 100%);
-            padding: 2rem;
-            border-radius: 10px;
-            border: 2px solid #3498db30;
-            transition: all 0.3s;
-        }
-
-        .hardware-item:hover {
-            border-color: #3498db;
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.15);
-        }
-
-        .hardware-item h4 {
-            color: #2c3e50;
-            margin-bottom: 0.8rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .hardware-item p {
-            color: #666;
-            font-size: 0.95rem;
             line-height: 1.7;
+            font-size: clamp(0.9em, 2vw, 1em);
         }
 
-        /* Ekosistem */
-        .ecosystem {
-            padding: 5rem 0;
-            background: #f5f7fa;
+        /* Capabilities Section */
+        #capabilities {
+            background-color: #fff;
         }
 
-        .ecosystem-intro {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            margin-bottom: 3rem;
-            border-left: 4px solid #3498db;
-        }
-
-        .ecosystem-intro p {
-            color: #555;
-            line-height: 1.9;
-            font-size: 1.05rem;
-        }
-
-        .ecosystem-grid {
+        .capabilities-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
         }
 
-        .ecosystem-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-top: 4px solid #3498db;
-        }
-
-        .ecosystem-card h3 {
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-
-        .ecosystem-card p {
-            color: #666;
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-            font-size: 0.95rem;
-        }
-
-        .ecosystem-card a {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: 600;
-            display: block;
-            padding: 0.7rem 0;
+        .capability-item {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
             transition: all 0.3s;
         }
 
-        .ecosystem-card a:hover {
-            color: #2c3e50;
-            padding-left: 0.5rem;
+        .capability-item:hover {
+            border-left-color: #764ba2;
+            background: linear-gradient(135deg, #667eea25 0%, #764ba225 100%);
         }
 
-        /* Form Bölümü */
-        .feature-form {
-            padding: 5rem 0;
-            background: white;
+        .capability-item h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: clamp(1em, 2.5vw, 1.1em);
         }
 
-        .form-intro {
-            background: linear-gradient(135deg, #ecf0f1 0%, #f5f7fa 100%);
-            padding: 2.5rem;
-            border-radius: 10px;
-            margin-bottom: 3rem;
-            border-left: 4px solid #3498db;
-        }
-
-        .form-intro h3 {
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-
-        .form-intro p {
+        .capability-item p {
             color: #555;
-            line-height: 1.9;
-            font-size: 1.05rem;
+            font-size: clamp(0.85em, 2vw, 0.95em);
         }
 
-        .form-container {
-            background: #f5f7fa;
-            padding: 3rem;
-            border-radius: 12px;
-            max-width: 800px;
-            margin: 0 auto;
+        /* Alarm Section */
+        #alarms {
+            background-color: #f8f9fa;
+        }
+
+        .alarm-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: clamp(20px, 4vw, 30px);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .form-group {
-            margin-bottom: 2rem;
+            margin-bottom: 20px;
         }
 
-        .form-group label {
+        label {
             display: block;
-            margin-bottom: 0.8rem;
-            color: #2c3e50;
+            margin-bottom: 8px;
             font-weight: 600;
-            font-size: 1rem;
+            color: #333;
+            font-size: clamp(0.9em, 2vw, 1em);
         }
 
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
+        input[type="text"],
+        input[type="email"],
+        input[type="time"],
+        textarea,
+        select {
             width: 100%;
-            padding: 1rem;
-            border: 2px solid #ecf0f1;
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
             font-family: inherit;
-            transition: all 0.3s;
-            color: #2c3e50;
+            font-size: clamp(0.9em, 2vw, 1em);
+            transition: border-color 0.3s;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="time"]:focus,
+        textarea:focus,
+        select:focus {
             outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .form-group textarea {
+        textarea {
             resize: vertical;
             min-height: 120px;
         }
 
-        .checkbox-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+        .alarm-list {
+            margin-top: 30px;
         }
 
-        .checkbox-item {
+        .alarm-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .alarm-time {
+            font-weight: bold;
+            color: #667eea;
+            font-size: clamp(1em, 2.5vw, 1.2em);
+        }
+
+        .alarm-description {
+            color: #666;
+            font-size: clamp(0.85em, 2vw, 0.95em);
+        }
+
+        .delete-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: clamp(0.8em, 2vw, 0.9em);
+            transition: background 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #ff5252;
+        }
+
+        /* Weather Section */
+        #weather {
+            background-color: #fff;
+        }
+
+        .weather-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: clamp(30px, 5vw, 50px);
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .weather-temp {
+            font-size: clamp(2.5em, 10vw, 4em);
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .weather-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+            font-size: clamp(0.9em, 2vw, 1.1em);
+        }
+
+        .weather-info-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .weather-info-label {
+            opacity: 0.9;
+            font-size: clamp(0.8em, 1.5vw, 0.9em);
+        }
+
+        .weather-info-value {
+            font-weight: bold;
+            font-size: clamp(1.1em, 2.5vw, 1.3em);
+            margin-top: 5px;
+        }
+
+        /* News Section */
+        #news {
+            background-color: #f8f9fa;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
-            gap: 0.8rem;
-        }
-
-        .checkbox-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .checkbox-item label {
-            margin: 0;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .form-submit {
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            justify-content: center;
+            font-size: 3em;
             color: white;
-            padding: 1.2rem 3rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
+        }
+
+        .news-content {
+            padding: clamp(15px, 3vw, 20px);
+        }
+
+        .news-date {
+            color: #999;
+            font-size: clamp(0.8em, 1.5vw, 0.9em);
+            margin-bottom: 10px;
+        }
+
+        .news-title {
+            color: #667eea;
+            font-size: clamp(1.1em, 3vw, 1.3em);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .news-description {
+            color: #666;
+            font-size: clamp(0.85em, 2vw, 0.95em);
+            line-height: 1.6;
+        }
+
+        /* Specifications Section */
+        #specifications {
+            background-color: #fff;
+        }
+
+        .specs-table {
             width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .form-submit:hover {
+        .specs-table th {
+            background-color: #667eea;
+            color: white;
+            padding: clamp(12px, 2vw, 15px);
+            text-align: left;
+            font-weight: 600;
+            font-size: clamp(0.9em, 2vw, 1em);
+        }
+
+        .specs-table td {
+            padding: clamp(12px, 2vw, 15px);
+            border-bottom: 1px solid #eee;
+            font-size: clamp(0.85em, 2vw, 0.95em);
+        }
+
+        .specs-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Suggestions Section */
+        #suggestions {
+            background-color: #f8f9fa;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: clamp(20px, 4vw, 30px);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-info {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: clamp(0.85em, 2vw, 0.95em);
+            color: #555;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: clamp(0.9em, 2vw, 1em);
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
-        .form-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .success-message {
-            display: none;
-            background: #27ae60;
-            color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .error-message {
-            display: none;
-            background: #e74c3c;
-            color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            text-align: center;
-            font-weight: 600;
+        .submit-btn:active {
+            transform: translateY(0);
         }
 
         /* Footer */
         footer {
-            background: #2c3e50;
+            background-color: #333;
             color: white;
-            padding: 4rem 0 1.5rem;
             text-align: center;
+            padding: clamp(20px, 4vw, 30px);
+            margin-top: 60px;
+            font-size: clamp(0.85em, 2vw, 0.95em);
         }
 
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2.5rem;
-            margin-bottom: 3rem;
+        footer p {
+            margin-bottom: 10px;
         }
 
-        .footer-section h4 {
-            margin-bottom: 1.5rem;
-            color: #3498db;
-            font-size: 1.1rem;
-            font-weight: 600;
+        /* Success/Error Messages */
+        .success-message,
+        .error-message {
+            display: none;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: clamp(0.9em, 2vw, 1em);
         }
 
-        .footer-section ul {
-            list-style: none;
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
 
-        .footer-section a {
-            color: #bdc3c7;
-            text-decoration: none;
-            transition: color 0.3s;
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success-message.show,
+        .error-message.show {
             display: block;
-            padding: 0.5rem 0;
-            font-size: 0.95rem;
         }
 
-        .footer-section a:hover {
-            color: #3498db;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #34495e;
-            padding-top: 2rem;
-            color: #95a5a6;
-            font-size: 0.95rem;
-        }
-
-        /* Responsive - Tablet ve Mobil */
-        @media (max-width: 1024px) {
-            .container {
-                padding: 0 15px;
-            }
-
-            .features-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            }
-
-            .hardware-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            }
-
-            .arch-flow {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            body {
-                font-size: 14px;
+            .about-content {
+                grid-template-columns: 1fr;
             }
 
-            header {
-                padding: 0.5rem 0;
+            nav ul {
+                gap: 10px;
             }
 
-            nav {
-                padding: 0.5rem 0;
+            .weather-info {
+                grid-template-columns: 1fr 1fr;
             }
 
-            .logo {
-                font-size: 1.4rem;
-                gap: 0.5rem;
+            .news-grid {
+                grid-template-columns: 1fr;
             }
 
-            .nav-links {
-                gap: 0.8rem;
-                font-size: 0.75rem;
+            .specs-table {
+                font-size: 0.85em;
             }
 
-            .nav-links a {
-                padding: 0.5rem;
-            }
-
-            .hero {
-                padding: 3rem 0;
-            }
-
-            .hero h1 {
-                font-size: 1.8rem;
-                margin-bottom: 0.8rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1rem;
-                margin-bottom: 0.5rem;
-            }
-
-            .hero-description {
-                font-size: 0.95rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .cta-buttons {
+            .alarm-item {
                 flex-direction: column;
-                gap: 1rem;
-            }
-
-            .btn {
-                width: 100%;
-                padding: 0.8rem 1.5rem;
-                font-size: 0.9rem;
-            }
-
-            .section-title {
-                font-size: 1.8rem;
-                margin-bottom: 0.8rem;
-            }
-
-            .section-subtitle {
-                font-size: 0.95rem;
-                margin-bottom: 2rem;
-            }
-
-            .introduction {
-                padding: 2rem 0;
-            }
-
-            .intro-content {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .intro-text h2 {
-                font-size: 1.5rem;
-                margin-bottom: 1rem;
-            }
-
-            .intro-text p {
-                font-size: 0.95rem;
-                margin-bottom: 1rem;
-                line-height: 1.6;
-            }
-
-            .intro-highlights {
-                padding: 1.5rem;
-            }
-
-            .intro-highlights h3 {
-                font-size: 1rem;
-                margin-bottom: 0.8rem;
-            }
-
-            .intro-highlights li {
-                padding: 0.5rem 0;
-                font-size: 0.9rem;
-            }
-
-            .features {
-                padding: 2rem 0;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .feature-card {
-                padding: 1.5rem;
-            }
-
-            .feature-icon {
-                font-size: 2rem;
-                margin-bottom: 0.8rem;
-            }
-
-            .feature-card h3 {
-                font-size: 1.1rem;
-                margin-bottom: 0.8rem;
-            }
-
-            .feature-card p {
-                font-size: 0.9rem;
-                line-height: 1.6;
-            }
-
-            .architecture {
-                padding: 2rem 0;
-            }
-
-            .arch-content {
-                padding: 1.5rem;
-            }
-
-            .arch-description {
-                font-size: 0.95rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .arch-box {
-                padding: 1.2rem;
-                font-size: 0.9rem;
-                min-width: 140px;
-            }
-
-            .arrow {
-                font-size: 1.5rem;
-            }
-
-            .protocols {
-                padding: 2rem 0;
-            }
-
-            .table-wrapper {
-                overflow-x: auto;
-            }
-
-            table th {
-                padding: 1rem;
-                font-size: 0.85rem;
-            }
-
-            table td {
-                padding: 1rem;
-                font-size: 0.85rem;
-            }
-
-            .hardware {
-                padding: 2rem 0;
-            }
-
-            .hardware-description {
-                padding: 1.5rem;
-                margin-bottom: 2rem;
-            }
-
-            .hardware-description p {
-                font-size: 0.95rem;
-            }
-
-            .hardware-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .hardware-item {
-                padding: 1.5rem;
-            }
-
-            .hardware-item h4 {
-                font-size: 1.05rem;
-                margin-bottom: 0.6rem;
-            }
-
-            .hardware-item p {
-                font-size: 0.9rem;
-            }
-
-            .ecosystem {
-                padding: 2rem 0;
-            }
-
-            .ecosystem-intro {
-                padding: 1.5rem;
-                margin-bottom: 2rem;
-            }
-
-            .ecosystem-intro p {
-                font-size: 0.95rem;
-            }
-
-            .ecosystem-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .ecosystem-card {
-                padding: 1.5rem;
-            }
-
-            .ecosystem-card h3 {
-                font-size: 1.1rem;
-                margin-bottom: 1rem;
-            }
-
-            .ecosystem-card p {
-                font-size: 0.9rem;
-                margin-bottom: 1rem;
-            }
-
-            .ecosystem-card a {
-                font-size: 0.9rem;
-                padding: 0.5rem 0;
-            }
-
-            .feature-form {
-                padding: 2rem 0;
-            }
-
-            .form-intro {
-                padding: 1.5rem;
-                margin-bottom: 2rem;
-            }
-
-            .form-intro h3 {
-                font-size: 1.1rem;
-                margin-bottom: 0.8rem;
-            }
-
-            .form-intro p {
-                font-size: 0.95rem;
-            }
-
-            .form-container {
-                padding: 1.5rem;
-            }
-
-            .form-group {
-                margin-bottom: 1.5rem;
-            }
-
-            .form-group label {
-                font-size: 0.95rem;
-                margin-bottom: 0.6rem;
-            }
-
-            .form-group input,
-            .form-group textarea,
-            .form-group select {
-                padding: 0.8rem;
-                font-size: 1rem;
-            }
-
-            .form-group textarea {
-                min-height: 100px;
-            }
-
-            .checkbox-group {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .checkbox-item input[type="checkbox"] {
-                width: 18px;
-                height: 18px;
-            }
-
-            .form-submit {
-                padding: 1rem 2rem;
-                font-size: 1rem;
-            }
-
-            footer {
-                padding: 2rem 0 1rem;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-                margin-bottom: 2rem;
-            }
-
-            .footer-section h4 {
-                font-size: 1rem;
-                margin-bottom: 1rem;
-            }
-
-            .footer-section a {
-                font-size: 0.9rem;
-                padding: 0.4rem 0;
-            }
-
-            .footer-bottom {
-                padding-top: 1.5rem;
-                font-size: 0.85rem;
+                align-items: flex-start;
             }
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 0 10px;
+            header {
+                padding: 30px 15px;
             }
 
-            .logo {
-                font-size: 1.2rem;
+            section {
+                padding: 30px 15px;
             }
 
-            .nav-links {
-                gap: 0.5rem;
-                font-size: 0.65rem;
+            nav ul {
+                gap: 8px;
             }
 
-            .hero {
-                padding: 2rem 0;
+            .weather-info {
+                grid-template-columns: 1fr;
             }
 
-            .hero h1 {
-                font-size: 1.5rem;
-                margin-bottom: 0.6rem;
-            }
-
-            .hero-subtitle {
-                font-size: 0.9rem;
-            }
-
-            .hero-description {
-                font-size: 0.9rem;
-                margin-bottom: 1rem;
-            }
-
-            .btn {
-                padding: 0.7rem 1rem;
-                font-size: 0.85rem;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-                margin-bottom: 0.6rem;
-            }
-
-            .section-subtitle {
-                font-size: 0.9rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .introduction {
-                padding: 1.5rem 0;
-            }
-
-            .intro-text h2 {
-                font-size: 1.3rem;
-            }
-
-            .intro-text p {
-                font-size: 0.9rem;
-            }
-
-            .feature-card {
-                padding: 1.2rem;
-            }
-
-            .feature-icon {
-                font-size: 1.8rem;
-            }
-
-            .feature-card h3 {
-                font-size: 1rem;
-            }
-
-            .feature-card p {
-                font-size: 0.85rem;
-            }
-
-            .arch-box {
-                padding: 1rem;
-                font-size: 0.8rem;
-                min-width: 120px;
-            }
-
-            .arrow {
-                font-size: 1.2rem;
-            }
-
-            table {
-                font-size: 0.75rem;
-            }
-
-            table th,
-            table td {
-                padding: 0.7rem;
-            }
-
-            .hardware-item h4 {
-                font-size: 1rem;
-            }
-
-            .hardware-item p {
-                font-size: 0.85rem;
-            }
-
-            .ecosystem-card h3 {
-                font-size: 1rem;
-            }
-
-            .ecosystem-card p {
-                font-size: 0.85rem;
-            }
-
-            .form-container {
-                padding: 1rem;
-            }
-
-            .form-group label {
-                font-size: 0.9rem;
-            }
-
-            .form-group input,
-            .form-group textarea,
-            .form-group select {
-                padding: 0.7rem;
-                font-size: 0.95rem;
-            }
-
-            .form-group textarea {
-                min-height: 80px;
-            }
-
-            .checkbox-item {
-                gap: 0.6rem;
-            }
-
-            .checkbox-item label {
-                font-size: 0.85rem;
-            }
-
-            .form-submit {
-                padding: 0.9rem 1.5rem;
-                font-size: 0.95rem;
-            }
-
-            .footer-section h4 {
-                font-size: 0.95rem;
-            }
-        }
-
-        /* Animasyon */
-        .fade-in {
-            opacity: 0;
-            animation: fadeIn 0.6s ease-in forwards;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            .specs-table th,
+            .specs-table td {
+                padding: 10px 8px;
             }
         }
     </style>
@@ -1170,547 +594,317 @@
 <body>
     <!-- Header -->
     <header>
-        <div class="container">
-            <nav>
-                <div class="logo">🤖 Kıtmir Robot</div>
-                <ul class="nav-links">
-                    <li><a href="#intro">Giriş</a></li>
-                    <li><a href="#features">Özellikler</a></li>
-                    <li><a href="#architecture">Mimarı</a></li>
-                    <li><a href="#hardware">Donanım</a></li>
-                    <li><a href="#form">Öneriler</a></li>
-                </ul>
-            </nav>
-        </div>
+        <h1>🤖 Kıtmir</h1>
+        <p>Yapay Zeka Asistanı Robotu</p>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Kıtmir Robot</h1>
-            <p class="hero-subtitle">Profesyonel Sesli Asistan Platformu</p>
-            <p class="hero-description">
-                Kıtmir Robot, MCP protokolü kullanan, Qwen ve DeepSeek gibi gelişmiş dil modelleri ile güçlendirilmiş, 
-                ESP32 tabanlı profesyonel bir sesli sohbet robotu platformudur. Yapay zeka teknolojisini donanım ile 
-                birleştirerek, akıllı ev otomasyonu, IoT cihaz kontrolü ve kişiselleştirilmiş sesli etkileşim deneyimi sunar.
-            </p>
-            <div class="cta-buttons">
-                <a href="#intro" class="btn btn-primary">Detayları Keşfet</a>
-                <a href="#form" class="btn btn-secondary">Önerinizi Paylaşın</a>
-            </div>
-        </div>
-    </section>
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#about"  >Hakkında</a></li>
+            <li><a href="#features"  >Özellikler</a></li>
+            <li><a href="#capabilities"  >Yetenekler</a></li>
+            <li><a href="#specifications"  >Teknik Bilgiler</a></li>
+            <li><a href="#suggestions"  >Öneriler</a></li>
+        </ul>
+    </nav>
 
-    <!-- Giriş Bölümü -->
-    <section id="intro" class="introduction">
+    <!-- About Section -->
+    <section id="about">
         <div class="container">
-            <h2 class="section-title">Kıtmir Robot Nedir?</h2>
-            <div class="intro-content">
-                <div class="intro-text">
-                    <h2>Yapay Zeka Destekli Sesli Platform</h2>
+            <h2>Kıtmir Hakkında</h2>
+            <div class="about-content">
+                <div class="about-text">
                     <p>
-                        Kıtmir Robot, modern yapay zeka teknolojisini gömülü sistemler dünyasına taşıyan devrim niteliğinde bir projedir. 
-                        Temel amacı, herkesin erişebileceği, özelleştirilebilir ve genişletilebilir bir sesli asistan platformu sunmaktır.
+                        Hayal edin: Sadece komutlarınızı yerine getiren bir robot değil, aynı zamanda sizi anlayan, sizinle öğrenen ve hatta duygusal tepkiler verebilen bir arkadaş. İşte Kıtmir tam da bu! Kıtmir, yapay zeka ve robotik teknolojilerinin en son yeniliklerini bir araya getirerek geliştirilmiş, hayatınıza neşe, bilgi ve kolaylık katmak için tasarlanmış akıllı bir asistandır.
                     </p>
                     <p>
-                        ESP32 mikrodenetleyicisi üzerinde çalışan bu sistem, Qwen ve DeepSeek gibi gelişmiş dil modellerini kullanarak 
-                        doğal dil işleme, konuşma tanıma ve sentezi gerçekleştirir. MCP (Model Context Protocol) protokolü sayesinde, 
-                        cihazlar ve bulut hizmetleri ile sorunsuz entegrasyon sağlanır.
+                        Kıtmir, sadece bir cihazdan öte, sizinle birlikte yaşayan, öğrenen ve gelişen bir varlıktır. Onunla sohbet edebilir, yeni şeyler keşfedebilir, hatta duygusal anlarınızı paylaşabilirsiniz. Kıtmir, teknolojinin soğuk yüzünü ortadan kaldırarak, sıcak ve samimi bir etkileşim sunar.
                     </p>
                     <p>
-                        Kıtmir Robot, MIT Lisansı altında sunulmakta ve küresel bir topluluğun katkılarıyla 
-                        sürekli geliştirilmektedir. Ticari ve kişisel kullanım için özgürce kullanılabilir, değiştirilebilir 
-                        ve dağıtılabilir.
+                        Kıtmir ile dil öğrenebilir, oyunlar oynayabilir, sorularınıza cevap alabilir ve sınırsız yaratıcı projeler gerçekleştirebilirsiniz.
+                    </p>
+                    <p>
+                        <strong>Kıtmir, hayatın birçok alanında size yardımcı olabilir:</strong>
+                        </p><ul>
+                            <li><strong>Eğitim:</strong> Çocukların ve yetişkinlerin öğrenme süreçlerini destekler.</li>
+                            <li><strong>Ev Asistanı:</strong> Günlük işlerinizi organize eder, bilgi sağlar.</li>
+                            <li><strong>Eğlence:</strong> Oyunlar, hikayeler ve müzik ile keyifli vakit geçirmenizi sağlar.</li>
+                            <li><strong>Araştırma:</strong> Bilgiye hızlı erişim ile araştırmalarınıza destek olur.</li>
+                            <li><strong>Robotik Projeleri:</strong> Geliştiriciler için esnek bir platform sunar.</li>
+                        </ul>
+                    <p></p>
+                    <p>
+                        Kıtmir, sadece bugünün değil, yarının da teknolojisini evinize getiriyor. Yapay zeka ve robotik alanındaki sürekli gelişmelerle birlikte Kıtmir de sizinle birlikte evrilecek, yeni yetenekler kazanacak ve hayatınızı daha da kolaylaştıracak. Kıtmir ile tanışın, geleceğin akıllı arkadaşlığına merhaba deyin!
                     </p>
                 </div>
-                <div class="intro-highlights">
-                    <h3>Temel Avantajları</h3>
-                    <ul>
-                        <li>70+ Desteklenen Donanım Platformu</li>
-                        <li>Çok Dil Desteği (Çince, İngilizce, Japonca)</li>
-                        <li>Offline Sesli Uyandırma Yeteneği</li>
-                        <li>MCP ile Sınırsız Genişletilebilirlik</li>
-                        <li>Konuşmacı Tanıma Teknolojisi</li>
-                        <li>Wi-Fi ve 4G Bağlantı Seçenekleri</li>
-                        <li>Profesyonel Geliştirme Desteği</li>
-                        <li>Topluluk Tarafından Desteklenen Platform</li>
-                    </ul>
+                <div class="about-image">
+                    🤖
+                    <p style="font-size: 0.4em; margin-top: 20px;">Kıtmir</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Özellikler Bölümü -->
-    <section id="features" class="features">
+    <!-- Features Section -->
+    <section id="features">
         <div class="container">
-            <h2 class="section-title">Temel Özellikler</h2>
-            <p class="section-subtitle">
-                Kıtmir Robot, modern yapay zeka uygulamaları için gerekli tüm özellikleri içerir. 
-                Her özellik, kullanıcı deneyimini ve sistem performansını maksimize etmek için tasarlanmıştır.
-            </p>
+            <h2>Ana Özellikler</h2>
             <div class="features-grid">
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🎙️</div>
-                    <h3>Streaming Sesli İşleme</h3>
+                <div class="feature-card">
+                    <div class="feature-icon">🎤</div>
+                    <h3>Sizinle Konuşur, Sizi Anlar</h3>
                     <p>
-                        Gerçek zamanlı konuşma tanıma (ASR), büyük dil modeli işleme (LLM) ve metin-konuşma sentezi (TTS) 
-                        mimarisi ile kesintisiz sesli etkileşim sağlanır. Düşük gecikme ve yüksek doğruluk oranı ile profesyonel 
-                        kullanım için uygun.
+                        Kıtmir, sadece sesinizi duymakla kalmaz, söylediklerinizi anlar ve size anlamlı yanıtlar verir. 
+                        Gelişmiş ses tanıma teknolojisi sayesinde, onunla doğal bir sohbet edebilirsiniz.
                     </p>
                 </div>
 
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🔊</div>
-                    <h3>Offline Sesli Uyandırma</h3>
+                <div class="feature-card">
+                    <div class="feature-icon">👁️</div>
+                    <h3>Dünyayı Sizin Gözünüzden Görür</h3>
                     <p>
-                        ESP-SR teknolojisi ile cihazda yerel olarak çalışan sesli uyandırma. İnternet bağlantısı olmadan bile 
-                        sistem hazır durumda kalır. Özelleştirilebilir uyandırma kelimeleri ile kişiselleştirme imkanı.
+                        Entegre kamerası sayesinde çevresini görebilir ve bu görüntüleri sizinle paylaşabilir. 
+                        Canlı görüntü akışı ile Kıtmir'in gözünden dünyayı keşfedebilir, hatta özel anlarınızı fotoğraflayabilirsiniz.
                     </p>
                 </div>
 
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">👤</div>
-                    <h3>Konuşmacı Tanıma</h3>
+                <div class="feature-card">
+                    <div class="feature-icon">😊</div>
+                    <h3>Duygularını İfade Eder, Sizinle Bağ Kurar</h3>
                     <p>
-                        3D Speaker teknolojisi ile farklı konuşmacıları tanıyıp kişiselleştirilmiş yanıtlar sunma. Aile üyelerinin 
-                        her biri için ayrı profil ve tercihler. Güvenlik ve kişiselleştirme için ideal.
+                        LED göstergeleri ve özel ses efektleri aracılığıyla mutluluğunu, merakını, şaşkınlığını veya üzüntüsünü ifade edebilir. 
+                        Bu duygusal tepkiler, Kıtmir ile aranızda daha derin bir bağ kurulmasını sağlar.
                     </p>
                 </div>
 
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🌐</div>
-                    <h3>Çoklu Bağlantı Seçenekleri</h3>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Bilgiye Anında Ulaşım</h3>
                     <p>
-                        Wi-Fi ve ML307 Cat.1 4G desteği ile her yerde bağlantı. Websocket ve MQTT+UDP protokolleri ile esnek 
-                        iletişim seçenekleri. OPUS audio codec ile yüksek kaliteli ses sıkıştırması.
+                        Kıtmir, internetin sınırsız bilgi dünyasına açılan kapınızdır. 
+                        Sizin için anında Google'da arama yapabilir veya YouTube'da istediğiniz içeriği bulup size gösterebilir.
                     </p>
                 </div>
 
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🎨</div>
-                    <h3>Zengin Arayüz Desteği</h3>
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>Yolunuzu Bulur, Size Rehberlik Eder</h3>
                     <p>
-                        OLED ve LCD ekran seçenekleri, emoji gösterimi, pil göstergesi ve özelleştirilebilir arka planlar. 
-                        Web tabanlı editör ile kolay özelleştirme. Profesyonel ve modern görünüm.
+                        Harita entegrasyonu sayesinde, gitmek istediğiniz yeri Kıtmir'e söyleyin, 
+                        o da size en kısa ve en uygun rotayı tarif etsin. Kıtmir ile kaybolmak artık geçmişte kaldı.
                     </p>
                 </div>
 
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🏠</div>
-                    <h3>Akıllı Ev Kontrolü</h3>
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3>Sizin Kıtmir'iniz: Kişiselleştirme</h3>
                     <p>
-                        MCP protokolü ile hoparlör, LED, Servo, GPIO ve diğer IoT cihazlarını kontrol. Sınırsız genişletilebilirlik 
-                        ve entegrasyon imkanı. Bulut tarafı MCP ile uzaktan kontrol ve otomasyon.
+                        Kıtmir, tamamen size özel bir deneyim sunar. Onun ismini değiştirebilir, ses tonunu ayarlayabilir 
+                        ve hatta belirli tepkilerini kişiselleştirebilirsiniz. Kıtmir, sizin tercihlerinize göre şekillenir.
                     </p>
                 </div>
 
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🌍</div>
-                    <h3>Çok Dil Desteği</h3>
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <h3>Alarm Kurma &amp; Hatırlatıcı</h3>
                     <p>
-                        Çince, İngilizce ve Japonca desteği. Yerelleştirilmiş deneyim ve kültürel uyum. Yeni diller için genişleme 
-                        imkanı. Küresel kullanıcı tabanı için ideal.
+                        Kıtmir, önemli anlarınızı hatırlatır. Alarm ayarlayabilir, belirli saatlerde size bildirim gönderebilir 
+                        ve günlük görevlerinizi organize etmenize yardımcı olabilir. Tekrarlayan alarmlar ile rutin işlerinizi otomatikleştirebilirsiniz.
                     </p>
                 </div>
 
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Güç Yönetimi</h3>
+                <div class="feature-card">
+                    <div class="feature-icon">🌤️</div>
+                    <h3>Hava Durumu Bilgisi</h3>
                     <p>
-                        Pil göstergesi ve akıllı enerji yönetimi. Uzun çalışma süresi ve düşük güç tüketimi. Mobil uygulamalar 
-                        için optimize edilmiş. Sürdürülebilir kullanım için tasarlanmış.
+                        Kıtmir, her an güncel hava durumu bilgisini size sunar. Sıcaklık, nem oranı, rüzgar hızı ve daha fazlasını 
+                        öğrenebilirsiniz. Dışarı çıkmadan önce Kıtmir'e sorun, o da size en uygun kıyafet önerisinde bulunabilir.
                     </p>
                 </div>
 
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🔒</div>
-                    <h3>Güvenilir Mimarı</h3>
+                <div class="feature-card">
+                    <div class="feature-icon">📰</div>
+                    <h3>Son Haberler &amp; Güncel Bilgiler</h3>
                     <p>
-                        MIT Lisansı altında sunulan platform. Ticari ve kişisel kullanım için özgür. Topluluk katkıları ile 
-                        sürekli gelişim. Şeffaflık ve güvenilirlik garantisi.
+                        Kıtmir, dünyada neler olup bittiğini size anında bildirir. Son haberler, teknoloji güncellemeleri, 
+                        spor sonuçları ve daha fazlasını takip edebilirsiniz. Hiçbir önemli haberi kaçırmayın!
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Teknik Mimarı -->
-    <section id="architecture" class="architecture">
+    <!-- Capabilities Section -->
+    <section id="capabilities">
         <div class="container">
-            <h2 class="section-title">Teknik Mimarı ve Protokoller</h2>
-            <p class="section-subtitle">
-                Kıtmir Robot, modern yazılım mimarisi ve iletişim protokolleri üzerine inşa edilmiştir. 
-                Sistem, ölçeklenebilirlik, güvenilirlik ve genişletilebilirlik için optimize edilmiştir.
+            <h2>Yetenekler &amp; İşlevler</h2>
+            <div class="capabilities-list">
+                <div class="capability-item">
+                    <h4>🗣️ Gelişmiş Ses Etkileşimi</h4>
+                    <p>
+                        Kıtmir, sadece sesinizi duymakla kalmaz, söylediklerinizi anlar ve size anlamlı yanıtlar verir. 
+                        Doğal sohbet, akıllı yanıtlar ve duygusal ton algılama ile tam bir iletişim deneyimi sunar.
+                    </p>
+                </div>
+
+                <div class="capability-item">
+                    <h4>👁️ Canlı Görüntü ve Görsel Zeka</h4>
+                    <p>
+                        Entegre kamerası sayesinde çevresini görebilir, canlı görüntü akışı sağlayabilir, 
+                        fotoğraf çekebilir ve gördüğü nesneleri tanıyarak size bilgi verebilir.
+                    </p>
+                </div>
+
+                <div class="capability-item">
+                    <h4>😊 Duygusal İfade ve Bağ Kurma</h4>
+                    <p>
+                        LED göstergeleri ve özel ses efektleri aracılığıyla mutluluğunu, merakını, şaşkınlığını veya üzüntüsünü ifade eder. 
+                        Bu sayede sizinle daha derin bir bağ kurar.
+                    </p>
+                </div>
+
+                <div class="capability-item">
+                    <h4>🧠 Bilgiye Anında Ulaşım</h4>
+                    <p>
+                        İnternetin sınırsız bilgi dünyasına açılan kapınızdır. 
+                        Sizin için anında Google ve YouTube üzerinde arama yapabilir, istediğiniz içeriği bulup gösterebilir.
+                    </p>
+                </div>
+
+                <div class="capability-item">
+                    <h4>🗺️ Harita ve Navigasyon</h4>
+                    <p>
+                        Gitmek istediğiniz yere Kıtmir size yol gösterebilir. 
+                        Harita entegrasyonu sayesinde en kısa ve en uygun rotayı tarif eder, kaybolmanızı engeller.
+                    </p>
+                </div>
+
+                <div class="capability-item">
+                    <h4>📚 Dil Öğrenme ve Eğlence</h4>
+                    <p>
+                        Yeni diller öğrenmenize, kelime bilginizi geliştirmenize ve telaffuz pratikleri yapmanıza yardımcı olur. 
+                        Eğlenceli ve eğitici oyunlarla öğrenme sürecini keyifli hale getirir.
+                    </p>
+                </div>
+
+                <div class="capability-item">
+                    <h4>✨ Kişiselleştirme ve Özelleştirme</h4>
+                    <p>
+                        Kıtmir, tamamen size özel bir deneyim sunar. Onun ismini değiştirebilir, ses tonunu ayarlayabilir 
+                        ve hatta belirli tepkilerini kişiselleştirebilirsiniz. Sizin tercihlerinize göre şekillenir.
+                    </p>
+                </div>
+
+                <div class="capability-item">
+                    <h4>🌐 Ağ Bağlantısı ve Güncelleme</h4>
+                    <p>
+                        WiFi üzerinden internet bağlantısı kurar, uzaktan kontrol edilebilir ve 
+                        OTA (Over-The-Air) ile kablosuz firmware güncellemeleri alabilir.
+                    </p>
+                </div>
+
+                <div class="capability-item">
+                    <h4>⚙️ Geliştirilebilir Yapı</h4>
+                    <p>
+                        Kıtmir, sürekli olarak yeni yetenekler kazanabilir ve mevcut özellikleri geliştirilebilir. 
+                        Bu sayede her zaman güncel ve yetenekli kalır.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Specifications Section -->
+    <section id="specifications">
+        <div class="container">
+            <h2>Teknik Bilgiler</h2>
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th>Kategori</th>
+                        <th>Bilgi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Platform</strong></td>
+                        <td>ESP32 (Espressif Systems) - Kıtmir'in beyni, hızlı ve verimli işlem gücü sunar.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>İşletim Sistemi</strong></td>
+                        <td>FreeRTOS - Kıtmir'in görevlerini sorunsuz bir şekilde yöneten gerçek zamanlı işletim sistemi.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Programlama Dili</strong></td>
+                        <td>C++ - Kıtmir'in karmaşık algoritmalarını ve hızlı tepkilerini sağlayan güçlü bir dil.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Görsel Algı</strong></td>
+                        <td>Yüksek çözünürlüklü kamera - Kıtmir'in dünyayı görmesini ve sizinle paylaşmasını sağlar.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>İşitsel Algı</strong></td>
+                        <td>Gelişmiş mikrofon ve ses işleme - Kıtmir'in sesinizi net bir şekilde duymasını ve anlamasını sağlar.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Duygusal İfade</strong></td>
+                        <td>Dinamik LED ekran ve ses çıkışı - Kıtmir'in duygularını ve tepkilerini görsel ve işitsel olarak ifade etmesini sağlar.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Güncelleme</strong></td>
+                        <td>OTA (Over-The-Air) - Kıtmir'in yazılımını kablosuz olarak güncelleyerek her zaman en yeni özelliklere sahip olmasını sağlar.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>İletişim Protokolleri</strong></td>
+                        <td>MCP, UART, HTTP, MQTT - Kıtmir'in diğer cihazlarla ve sistemlerle güvenli ve etkili bir şekilde iletişim kurmasını sağlar.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kişiselleştirme</strong></td>
+                        <td>Esnek yazılım mimarisi - Kıtmir'in ismini, sesini ve tepkilerini size özel hale getirmenizi sağlar.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Suggestions Section -->
+    <section id="suggestions">
+        <div class="container">
+            <h2>Öneriler &amp; Geri Bildirim</h2>
+            <p style="text-align: center; margin-bottom: 30px; font-size: clamp(0.95em, 2vw, 1.1em); color: #666;">
+                Kıtmir'i daha iyi hale getirmek için önerilerinizi paylaşın. 
+                Hangi yeni özellikler eklenebilir? Neleri geliştirmek istersiniz?
             </p>
-            
-            <div class="arch-content">
-                <h3 style="color: #2c3e50; margin-bottom: 1.5rem; font-size: 1.4rem; font-weight: 600;">MCP Protokolü ile Çok Uçlu Kontrol Mimarisi</h3>
-                
-                <p class="arch-description">
-                    Kıtmir Robot, Model Context Protocol (MCP) kullanarak cihaz tarafı ve bulut tarafı arasında sorunsuz iletişim sağlar. 
-                    Bu mimarı, yerel cihaz kontrolü ile bulut hizmetlerinin gücünü birleştirerek, sınırsız genişletilebilirlik sunar.
-                </p>
-
-                <div class="arch-flow">
-                    <div class="arch-box">🎙️ Ses Girişi</div>
-                    <div class="arrow">→</div>
-                    <div class="arch-box">🧠 ASR + LLM</div>
-                    <div class="arrow">→</div>
-                    <div class="arch-box">🔊 TTS Çıkışı</div>
-                </div>
-
-                <div style="background: white; padding: 2rem; border-radius: 10px; margin-top: 2rem;">
-                    <h4 style="color: #2c3e50; margin-bottom: 1.5rem; font-size: 1.2rem; font-weight: 600;">MCP Entegrasyonu</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                        <div>
-                            <h5 style="color: #3498db; margin-bottom: 0.8rem; font-weight: 600;">📱 Cihaz Tarafı MCP</h5>
-                            <p style="color: #666; line-height: 1.8; font-size: 0.95rem;">
-                                Hoparlör, LED, Servo motor, GPIO pinleri ve diğer donanım bileşenlerinin kontrolü. 
-                                Yerel cihaz yönetimi ve real-time yanıt. Düşük gecikme ve yüksek güvenilirlik.
-                            </p>
-                        </div>
-                        <div>
-                            <h5 style="color: #3498db; margin-bottom: 0.8rem; font-weight: 600;">☁️ Bulut Tarafı MCP</h5>
-                            <p style="color: #666; line-height: 1.8; font-size: 0.95rem;">
-                                Akıllı ev otomasyonu, masaüstü işlemleri, bilgi arama, e-posta entegrasyonu ve diğer bulut hizmetleri. 
-                                Sınırsız genişletilebilirlik ve yeni özellik ekleme imkanı.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- İletişim Protokolleri -->
-    <section class="protocols">
-        <div class="container">
-            <h2 class="section-title">İletişim Protokolleri</h2>
-            <p class="section-subtitle">
-                Kıtmir Robot, farklı kullanım senaryoları için çeşitli iletişim protokollerini destekler. 
-                Her protokol, belirli ihtiyaçlar için optimize edilmiştir.
-            </p>
-            
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Protokol</th>
-                            <th>Açıklama</th>
-                            <th>Kullanım Alanı</th>
-                            <th>Avantajlar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Websocket</strong></td>
-                            <td>Gerçek zamanlı iki yönlü iletişim protokolü</td>
-                            <td>Web tabanlı istemciler ve tarayıcı uygulamaları</td>
-                            <td>Düşük gecikme, tam çift yönlü iletişim, kolay entegrasyon</td>
-                        </tr>
-                        <tr>
-                            <td><strong>MQTT</strong></td>
-                            <td>Yayın-Abone mesajlaşması protokolü</td>
-                            <td>IoT cihazları ve geniş ağ uygulamaları</td>
-                            <td>Hafif, güvenilir, ölçeklenebilir, düşük bant genişliği</td>
-                        </tr>
-                        <tr>
-                            <td><strong>UDP</strong></td>
-                            <td>Hızlı veri iletimi protokolü</td>
-                            <td>Ses akışı ve gerçek zamanlı veri</td>
-                            <td>Düşük gecikme, hızlı iletim, minimal overhead</td>
-                        </tr>
-                        <tr>
-                            <td><strong>OPUS</strong></td>
-                            <td>Yüksek kaliteli audio codec</td>
-                            <td>Ses sıkıştırması ve iletimi</td>
-                            <td>Yüksek kalite, düşük bant genişliği, geniş uyumluluk</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <!-- Donanım Desteği -->
-    <section id="hardware" class="hardware">
-        <div class="container">
-            <h2 class="section-title">Desteklenen Donanım Platformları</h2>
-            
-            <div class="hardware-description">
-                <p>
-                    Kıtmir Robot, 70'ten fazla donanım platformu ile uyumludur. Bu geniş uyumluluk, 
-                    kullanıcıların bütçe ve ihtiyaçlarına göre en uygun platformu seçmesini sağlar. 
-                    Başlangıç seviyesi projelerden profesyonel uygulamalara kadar tüm seviyelerde kullanılabilir.
-                </p>
-            </div>
-
-            <div class="hardware-grid">
-                <div class="hardware-item">
-                    <h4>Espressif ESP32-S3-BOX3</h4>
-                    <p>
-                        Resmi Espressif geliştirme kartı. Tam özellikli, ekran ve mikrofon entegre. 
-                        Profesyonel uygulamalar için ideal. Geniş dokümantasyon ve topluluk desteği.
-                    </p>
-                </div>
-
-                <div class="hardware-item">
-                    <h4>M5Stack CoreS3</h4>
-                    <p>
-                        Kompakt ve güçlü platform. Geniş ekosistem ve modüler tasarım. 
-                        Hızlı prototipleme için mükemmel. Ek modüller ile genişletilebilir.
-                    </p>
-                </div>
-
-                <div class="hardware-item">
-                    <h4>Waveshare ESP32-S3-Touch-AMOLED-1.8</h4>
-                    <p>
-                        Yüksek çözünürlüklü AMOLED ekran. Profesyonel görünüm ve keskin görüntü. 
-                        Dokunmatik ekran desteği. Premium uygulamalar için.
-                    </p>
-                </div>
-
-                <div class="hardware-item">
-                    <h4>LILYGO T-Circle-S3</h4>
-                    <p>
-                        Dairesel ekran tasarımı. Benzersiz ve şık görünüm. Kompakt form faktörü. 
-                        Taşınabilir uygulamalar için ideal.
-                    </p>
-                </div>
-
-                <div class="hardware-item">
-                    <h4>Magic Button 2.4</h4>
-                    <p>
-                        Kompakt buton tasarımı. Taşınabilir ve kullanıcı dostu. 
-                        Basit uygulamalar için hızlı başlangıç. Uygun fiyat.
-                    </p>
-                </div>
-
-                <div class="hardware-item">
-                    <h4>SenseCAP Watcher</h4>
-                    <p>
-                        Seeed Studio tarafından tasarlanmış. Endüstriyel kalite ve güvenilirlik. 
-                        Profesyonel ortamlarda kullanım. Uzun ömürlü tasarım.
-                    </p>
-                </div>
-
-                <div class="hardware-item">
-                    <h4>LiChuang ESP32-S3</h4>
-                    <p>
-                        Uygun fiyatlı geliştirme kartı. Başlangıç seviyesi projeler için ideal. 
-                        Öğrenme ve deneme için mükemmel. Geniş uyumluluk.
-                    </p>
-                </div>
-
-                <div class="hardware-item">
-                    <h4>M5Stack AtomS3R + Echo Base</h4>
-                    <p>
-                        Modüler tasarım. Ses sistemi ile geliştirilmiş. Esnek konfigürasyon. 
-                        Ses odaklı uygulamalar için.
-                    </p>
-                </div>
-
-                <div class="hardware-item">
-                    <h4>XiaGe Mini C3</h4>
-                    <p>
-                        Çok küçük form faktörü. Gömülü uygulamalar için. Minimal güç tüketimi. 
-                        Kompakt tasarımlar için ideal.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Ekosistem -->
-    <section id="ecosystem" class="ecosystem">
-        <div class="container">
-            <h2 class="section-title">Geniş Ekosistem ve Topluluk</h2>
-            
-            <div class="ecosystem-intro">
-                <p>
-                    Kıtmir Robot, sadece bir yazılım değil, tüm bir ekosistemdir. Resmi sunuculardan 
-                    istemcilere, özelleştirme araçlarından topluluk projelerine kadar, geniş bir ağ tarafından desteklenmektedir. 
-                    Bu ekosistem, kullanıcıların ve geliştiricilerin ihtiyaçlarını karşılamak için sürekli gelişmektedir.
-                </p>
-            </div>
-
-            <div class="ecosystem-grid">
-                <div class="ecosystem-card">
-                    <h3>📡 Resmi Bulut Hizmetleri</h3>
-                    <p>
-                        xiaozhi.me üzerinden Qwen gerçek zamanlı model desteği ile bulut hizmetleri sunulmaktadır. 
-                        Kişisel kullanıcılar ücretsiz olarak Qwen modelini kullanabilir. Kurumsal çözümler için 
-                        özel paketler mevcuttur.
-                    </p>
-                    <a href="#">→ xiaozhi.me Resmi Sunucu</a>
-                </div>
-
-                <div class="ecosystem-card">
-                    <h3>🖥️ Sunucu Çözümleri</h3>
-                    <p>
-                        Kendi sunucunuzu dağıtmak isteyenler için çeşitli sunucu projeleri mevcuttur. 
-                        Python, Java ve Golang dillerinde yazılmış sunucular, tam kontrol ve özelleştirme imkanı sunar. 
-                        Kurumsal ortamlarda kendi altyapınızda çalıştırabilirsiniz.
-                    </p>
-                    <a href="#">→ Python Server</a>
-                    <a href="#">→ Java Server</a>
-                    <a href="#">→ Golang Server</a>
-                </div>
-
-                <div class="ecosystem-card">
-                    <h3>📱 İstemci Projeleri</h3>
-                    <p>
-                        Farklı platformlarda Kıtmir Robot kullanmak için çeşitli istemci projeleri geliştirilmiştir. 
-                        Python, Android, Linux ve diğer platformlar için istemciler, Kıtmir Robot'u her yerde 
-                        erişilebilir kılmaktadır.
-                    </p>
-                    <a href="#">→ Python İstemci</a>
-                    <a href="#">→ Android İstemci</a>
-                    <a href="#">→ Linux İstemci</a>
-                </div>
-
-                <div class="ecosystem-card">
-                    <h3>🎨 Özelleştirme Araçları</h3>
-                    <p>
-                        Web tabanlı editör ile uyandırma kelimeleri, fontlar, emojiler ve arka planları özelleştirebilirsiniz. 
-                        Assets Generator aracı ile kendi varlıklarınızı oluşturun. Tamamen özelleştirilmiş deneyim yaratın.
-                    </p>
-                    <a href="#">→ Uyandırma Kelimeleri Editörü</a>
-                    <a href="#">→ Font ve Emoji Yöneticisi</a>
-                    <a href="#">→ Arka Plan Tasarımcısı</a>
-                </div>
-
-                <div class="ecosystem-card">
-                    <h3>🔌 Firmware Seçenekleri</h3>
-                    <p>
-                        Farklı çipler ve platformlar için özelleştirilmiş firmware seçenekleri mevcuttur. 
-                        Bluetooth çip firmware, QuecPython firmware ve SF32 firmware gibi seçenekler, 
-                        geniş donanım desteği sağlamaktadır.
-                    </p>
-                    <a href="#">→ Bluetooth Çip Firmware</a>
-                    <a href="#">→ QuecPython Firmware</a>
-                    <a href="#">→ SF32 Firmware</a>
-                </div>
-
-                <div class="ecosystem-card">
-                    <h3>📚 Öğrenme Kaynakları</h3>
-                    <p>
-                        Başlangıç rehberleri, teknik dokümantasyon, video öğreticileri ve topluluk forumları. 
-                        Kapsamlı dokümantasyon, GitHub Discussions ve Bilibili kanalı ile kapsamlı öğrenme materyalleri. 
-                        Herkesin öğrenebileceği şekilde tasarlanmış.
-                    </p>
-                    <a href="#">→ Başlangıç Rehberi</a>
-                    <a href="#">→ Teknik Dokümantasyon</a>
-                    <a href="#">→ Topluluk Forumu</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Form Bölümü -->
-    <section id="form" class="feature-form">
-        <div class="container">
-            <h2 class="section-title">Kıtmir Robot'a Ne Eklenebilir?</h2>
-            
-            <div class="form-intro">
-                <h3>Sizin Önerileriniz Önemli</h3>
-                <p>
-                    Kıtmir Robot, topluluk tarafından yönlendirilen bir projedir. Robotun geliştirilmesine 
-                    yardımcı olmak için, aşağıdaki formu kullanarak yeni özellik önerileri, iyileştirme fikirleri ve 
-                    entegrasyon seçenekleri sunabilirsiniz. Sizin geri bildiriminiz, projenin geleceğini şekillendirir.
-                </p>
-            </div>
 
             <div class="form-container">
                 <div class="success-message" id="successMessage">
-                    ✓ Teşekkür ederiz! Öneriniz başarıyla gönderilmiştir. Kıtmir Robot topluluğu tarafından değerlendirilecektir.
+                    ✓ Teşekkürler! Öneriniz başarıyla gönderildi. En kısa sürede gözden geçireceğiz.
                 </div>
                 <div class="error-message" id="errorMessage">
-                    ✗ Hata! Lütfen daha sonra tekrar deneyiniz.
+                    ✗ Hata! Lütfen tüm alanları doldurunuz ve tekrar deneyin.
                 </div>
 
-                <form id="suggestionForm">
+                <div class="form-info">
+                    <strong>💡 İpucu:</strong> Lütfen detaylı ve yapıcı öneriler yazınız. 
+                    Örneğin: "Kıtmir'e görüntü tanıma özelliği eklenebilir", 
+                    "Mobil uygulama geliştirilebilir" vb.
+                </div>
+
+                <form id="suggestionsForm" action="https://formspree.io/f/xyzkvper" method="POST">
                     <div class="form-group">
-                        <label for="name">Adı Soyadı</label>
-                        <input type="text" id="name" name="name" placeholder="Adınız ve soyadınız" required>
+                        <label for="name"  >Ad Soyad *</label>
+                        <input type="text" id="name" name="name" placeholder="Adınız ve soyadınız" required="" style=""  >
                     </div>
 
                     <div class="form-group">
-                        <label for="category">Önerinin Kategorisi</label>
-                        <select id="category" name="category" required>
-                            <option value="">-- Kategori Seçin --</option>
-                            <option value="hardware">Donanım Entegrasyonu</option>
-                            <option value="feature">Yeni Özellik</option>
-                            <option value="protocol">İletişim Protokolü</option>
-                            <option value="ai">Yapay Zeka Modeli</option>
-                            <option value="interface">Arayüz İyileştirmesi</option>
-                            <option value="security">Güvenlik Geliştirmesi</option>
-                            <option value="performance">Performans Optimizasyonu</option>
-                            <option value="integration">Üçüncü Taraf Entegrasyonu</option>
-                            <option value="documentation">Dokümantasyon</option>
-                            <option value="other">Diğer</option>
-                        </select>
+                        <label for="suggestion">Öneriniz *</label>
+                        <textarea id="suggestion" name="suggestion" placeholder="Kıtmir'e ne eklenebilir? Hangi özellikler geliştirilmeli? Detaylı yazınız..." required="" style=""  ></textarea>
                     </div>
 
-                    <div class="form-group">
-                        <label>İlgili Alanları Seçin (Birden fazla seçebilirsiniz)</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="voice" name="areas" value="voice">
-                                <label for="voice">Sesli İşleme</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="iot" name="areas" value="iot">
-                                <label for="iot">IoT Cihazları</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="smarthome" name="areas" value="smarthome">
-                                <label for="smarthome">Akıllı Ev</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="ai" name="areas" value="ai">
-                                <label for="ai">Yapay Zeka</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="cloud" name="areas" value="cloud">
-                                <label for="cloud">Bulut Hizmetleri</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="mobile" name="areas" value="mobile">
-                                <label for="mobile">Mobil Uygulamalar</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="security" name="areas" value="security">
-                                <label for="security">Güvenlik</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="ui" name="areas" value="ui">
-                                <label for="ui">Kullanıcı Arayüzü</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="title">Önerinin Başlığı</label>
-                        <input type="text" id="title" name="title" placeholder="Kısa ve açıklayıcı bir başlık girin" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="description">Detaylı Açıklama</label>
-                        <textarea id="description" name="description" placeholder="Önerinizi detaylı olarak açıklayın. Ne eklenebilir? Nasıl faydalı olur? Örnek kullanım senaryoları nelerdir?" required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="benefits">Beklenen Faydalar</label>
-                        <textarea id="benefits" name="benefits" placeholder="Bu önerinin Kıtmir Robot ve kullanıcılarına sağlayacağı faydaları açıklayın"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="implementation">Uygulama Önerileri (İsteğe Bağlı)</label>
-                        <textarea id="implementation" name="implementation" placeholder="Eğer teknik bilginiz varsa, bu önerinin nasıl uygulanabileceği hakkında fikirlerinizi paylaşın"></textarea>
-                    </div>
-
-                    <button type="submit" class="form-submit" id="submitBtn">Önerinizi Gönder</button>
+                    <button type="submit" class="submit-btn"  >Önerinizi Gönder</button>
                 </form>
             </div>
         </div>
@@ -1718,67 +912,72 @@
 
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>Proje Hakkında</h4>
-                    <ul>
-                        <li><a href="#">GitHub Repository</a></li>
-                        <li><a href="#">Lisans (MIT)</a></li>
-                        <li><a href="#">Sürüm Geçmişi</a></li>
-                        <li><a href="#">Katkıda Bulun</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Dokümantasyon</h4>
-                    <ul>
-                        <li><a href="#">Başlangıç Rehberi</a></li>
-                        <li><a href="#">Teknik Dokümantasyon</a></li>
-                        <li><a href="#">API Referansı</a></li>
-                        <li><a href="#">Sık Sorulan Sorular</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Topluluk</h4>
-                    <ul>
-                        <li><a href="#">Discord Sunucusu</a></li>
-                        <li><a href="#">QQ Grubu (994694848)</a></li>
-                        <li><a href="#">GitHub Discussions</a></li>
-                        <li><a href="#">Bilibili Kanal</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Kaynaklar</h4>
-                    <ul>
-                        <li><a href="#">Resmi Sunucu (xiaozhi.me)</a></li>
-                        <li><a href="#">Özelleştirme Araçları</a></li>
-                        <li><a href="#">Topluluk Projeleri</a></li>
-                        <li><a href="#">İş Ortaklığı</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2026 Kıtmir Robot Projesi. MIT Lisansı altında sunulmaktadır.</p>
-                <p style="margin-top: 0.8rem; font-size: 0.9rem;">
-                    Yapılan Katkılar: Orijinal Geliştirici (78), xinnan-tech, joey-zhou, AnimeAIChat, hackers365 ve 
-                    küresel topluluk üyeleri tarafından desteklenmektedir.
-                </p>
-            </div>
-        </div>
+        <p>© 2026 Kıtmir Yapay Zeka Asistanı. Tüm hakları saklıdır.</p>
+        <p style="margin-top: 20px; font-size: clamp(0.8em, 1.5vw, 0.9em); opacity: 0.8;">
+            Kıtmir, yapay zeka ve robotik teknolojisinin gücünü herkesin erişimine sunmak için geliştirilmiştir.
+        </p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js"></script>
     <script>
-        // Smooth scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+        // Initialize EmailJS
+        emailjs.init('public');
+    </script>
+    <script>
+
+
+        
+        // Suggestions form with Formspree Integration
+        document.getElementById('suggestionsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = this;
+            const btn = form.querySelector('button');
+            const name = document.getElementById('name').value.trim();
+            const suggestion = document.getElementById('suggestion').value.trim();
+
+            if (!name || !suggestion) {
+                showError('Lütfen tüm alanları doldurunuz.');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = 'Gönderiliyor...';
+
+            const data = new FormData(form);
+            // Explicitly set the recipient
+            data.append('_to', 'yesilyurtisa58@gmail.com');
+            data.append('_subject', 'Kıtmir Yeni Öneri');
+
+            fetch(form.action, {
+                method: 'POST',
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    showSuccess();
+                    form.reset();
+                } else {
+                    showError('E-posta gönderilemedi, lütfen tekrar deneyin.');
+                }
+            }).catch(error => {
+                showError('Bağlantı hatası oluştu.');
+            }).finally(() => {
+                btn.disabled = false;
+                btn.innerText = 'Önerinizi Gönder';
+            });
+        });
+// Smooth scrolling
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if (targetSection) {
+                    targetSection.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
                     });
@@ -1786,93 +985,8 @@
             });
         });
 
-        // Form submission
-        document.getElementById('suggestionForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const successMessage = document.getElementById('successMessage');
-            const errorMessage = document.getElementById('errorMessage');
-            
-            // Mesajları gizle
-            successMessage.style.display = 'none';
-            errorMessage.style.display = 'none';
-            
-            // Form verilerini topla
-            const formData = {
-                name: document.getElementById('name').value,
-                category: document.getElementById('category').value,
-                title: document.getElementById('title').value,
-                description: document.getElementById('description').value,
-                benefits: document.getElementById('benefits').value,
-                implementation: document.getElementById('implementation').value,
-                areas: Array.from(document.querySelectorAll('input[name="areas"]:checked')).map(el => el.value),
-                submittedAt: new Date().toLocaleString('tr-TR')
-            };
 
-            // Butonu devre dışı bırak
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Gönderiliyor...';
-
-            try {
-                // EmailJS kütüphanesini yükle
-                const script = document.createElement('script');
-                script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/index.min.js';
-                document.head.appendChild(script);
-
-                script.onload = function() {
-                    // EmailJS'i başlat (PUBLIC KEY)
-                    emailjs.init('YOUR_PUBLIC_KEY_HERE');
-
-                    // E-posta gönder
-                    emailjs.send('service_kitmir', 'template_kitmir', {
-                        to_email: 'yesilyurtisa58@gmail.com',
-                        from_name: formData.name,
-                        category: formData.category,
-                        title: formData.title,
-                        description: formData.description,
-                        benefits: formData.benefits,
-                        implementation: formData.implementation,
-                        areas: formData.areas.join(', '),
-                        submitted_at: formData.submittedAt
-                    }).then(function(response) {
-                        console.log('E-posta başarıyla gönderildi!', response);
-                        successMessage.style.display = 'block';
-                        document.getElementById('suggestionForm').reset();
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'Önerinizi Gönder';
-                    }, function(error) {
-                        console.log('E-posta gönderme hatası:', error);
-                        errorMessage.style.display = 'block';
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'Önerinizi Gönder';
-                    });
-                };
-            } catch (error) {
-                console.error('Hata:', error);
-                errorMessage.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Önerinizi Gönder';
-            }
-        });
-
-        // Fade in animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.feature-card').forEach(card => {
-            observer.observe(card);
-        });
     </script>
-</body>
-</html>
+
+
+</body></html>
