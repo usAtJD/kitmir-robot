@@ -37,31 +37,37 @@
         /* ── NAV ── */
         nav {
             background: #fff;
-            padding: 12px 16px;
+            padding: 8px 10px;
             position: sticky;
             top: 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             z-index: 100;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
         }
+
+        nav::-webkit-scrollbar { display: none; }
 
         nav ul {
             list-style: none;
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            max-width: 900px;
+            flex-wrap: nowrap;
+            gap: 5px;
+            min-width: max-content;
             margin: 0 auto;
+            padding: 0 4px;
         }
 
         nav ul li a {
             text-decoration: none;
             display: inline-block;
-            padding: 7px 16px;
-            border-radius: 8px;
+            padding: 5px 11px;
+            border-radius: 7px;
             font-weight: 700;
-            font-size: clamp(0.72em, 1.8vw, 0.88em);
-            letter-spacing: 0.02em;
+            font-size: 0.68em;
+            letter-spacing: 0.01em;
             border: 2px solid transparent;
             transition: transform 0.2s cubic-bezier(.34,1.56,.64,1),
                         box-shadow 0.2s ease,
@@ -69,77 +75,18 @@
                         color 0.2s ease;
             user-select: none;
             white-space: nowrap;
+            background: linear-gradient(135deg, #667eea22, #764ba211);
+            color: #4f5ec7;
+            border-color: #667eea66;
         }
 
         nav ul li a:active { transform: scale(0.92) !important; }
 
-        /* Hakkında - mor */
-        nav ul li:nth-child(1) a {
-            background: linear-gradient(135deg, #667eea22, #667eea11);
-            color: #4f5ec7;
-            border-color: #667eea66;
-        }
-        nav ul li:nth-child(1) a:hover {
+        nav ul li a:hover {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: #fff;
             border-color: transparent;
             box-shadow: 0 4px 14px rgba(102,126,234,0.45);
-            transform: translateY(-3px) scale(1.05);
-        }
-
-        /* Özellikler - pembe */
-        nav ul li:nth-child(2) a {
-            background: linear-gradient(135deg, #f093fb22, #f093fb11);
-            color: #a030a0;
-            border-color: #f093fb66;
-        }
-        nav ul li:nth-child(2) a:hover {
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-            color: #fff;
-            border-color: transparent;
-            box-shadow: 0 4px 14px rgba(240,147,251,0.45);
-            transform: translateY(-3px) scale(1.05);
-        }
-
-        /* Yetenekler - mavi */
-        nav ul li:nth-child(3) a {
-            background: linear-gradient(135deg, #4facfe22, #4facfe11);
-            color: #1270b8;
-            border-color: #4facfe66;
-        }
-        nav ul li:nth-child(3) a:hover {
-            background: linear-gradient(135deg, #4facfe, #00c6ff);
-            color: #fff;
-            border-color: transparent;
-            box-shadow: 0 4px 14px rgba(79,172,254,0.45);
-            transform: translateY(-3px) scale(1.05);
-        }
-
-        /* Teknik Bilgiler - yeşil */
-        nav ul li:nth-child(4) a {
-            background: linear-gradient(135deg, #43e97b22, #43e97b11);
-            color: #1a7a40;
-            border-color: #43e97b66;
-        }
-        nav ul li:nth-child(4) a:hover {
-            background: linear-gradient(135deg, #43e97b, #38f9d7);
-            color: #fff;
-            border-color: transparent;
-            box-shadow: 0 4px 14px rgba(67,233,123,0.45);
-            transform: translateY(-3px) scale(1.05);
-        }
-
-        /* Öneriler - turuncu-pembe */
-        nav ul li:nth-child(5) a {
-            background: linear-gradient(135deg, #fa709a22, #fa709a11);
-            color: #b02050;
-            border-color: #fa709a66;
-        }
-        nav ul li:nth-child(5) a:hover {
-            background: linear-gradient(135deg, #fa709a, #ffd700);
-            color: #fff;
-            border-color: transparent;
-            box-shadow: 0 4px 14px rgba(250,112,154,0.45);
             transform: translateY(-3px) scale(1.05);
         }
 
@@ -415,7 +362,6 @@
         @media (max-width: 480px) {
             header { padding: 20px 12px; }
             section { padding: 22px 12px; }
-            nav ul li a { padding: 6px 10px; font-size: 0.7em; }
             .specs-table th, .specs-table td { padding: 8px 6px; }
             .features-grid { grid-template-columns: 1fr; }
             .capabilities-list { grid-template-columns: 1fr; }
@@ -424,13 +370,11 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header>
         <h1>🤖 Kıtmir</h1>
         <p>Yapay Zeka Asistanı Robotu</p>
     </header>
 
-    <!-- Navigation -->
     <nav>
         <ul>
             <li><a href="#about">Hakkında</a></li>
@@ -441,17 +385,12 @@
         </ul>
     </nav>
 
-    <!-- About Section -->
     <section id="about">
         <div class="container">
             <div class="section-heading-wrap"><h2>Kıtmir Hakkında</h2></div>
             <div class="about-text">
-                <p>
-                    <strong>Kıtmir</strong>, yapay zeka ve robotik teknolojisinin en güncel yeniliklerini bir araya getiren, sizinle gerçek anlamda etkileşime geçebilen akıllı bir asistan robotudur. Sadece komut alan bir cihaz değil — sizi dinleyen, anlayan ve sizinle birlikte öğrenen bir yoldaş.
-                </p>
-                <p>
-                    Doğal dil işleme sayesinde Kıtmir ile rahatça sohbet edebilir, sorularınıza anında yanıt alabilir, günlük görevlerinizi organize edebilirsiniz. LED ekranı ve ses efektleri aracılığıyla duygularını ifade eden Kıtmir, teknolojiyle insani bir bağ kurmanızı sağlar.
-                </p>
+                <p><strong>Kıtmir</strong>, yapay zeka ve robotik teknolojisinin en güncel yeniliklerini bir araya getiren, sizinle gerçek anlamda etkileşime geçebilen akıllı bir asistan robotudur. Sadece komut alan bir cihaz değil — sizi dinleyen, anlayan ve sizinle birlikte öğrenen bir yoldaş.</p>
+                <p>Doğal dil işleme sayesinde Kıtmir ile rahatça sohbet edebilir, sorularınıza anında yanıt alabilir, günlük görevlerinizi organize edebilirsiniz. LED ekranı ve ses efektleri aracılığıyla duygularını ifade eden Kıtmir, teknolojiyle insani bir bağ kurmanızı sağlar.</p>
                 <p><strong>Kıtmir kimler için?</strong></p>
                 <ul>
                     <li><strong>🎓 Öğrenciler &amp; Eğitim:</strong> Ders konularını açıklar, dil öğrenmeye yardımcı olur, alıştırma soruları sorar.</li>
@@ -460,199 +399,90 @@
                     <li><strong>🔬 Araştırma:</strong> Google ve YouTube üzerinden anlık bilgi getirir, sonuçları özetler.</li>
                     <li><strong>⚙️ Geliştiriciler:</strong> Açık mimarisi sayesinde yeni modüller ve yetenekler eklenebilir.</li>
                 </ul>
-                <p>
-                    Kıtmir, OTA güncellemeleri ile sürekli gelişir. Bugün kurduğunuz robot, yarın yeni yetenekler kazanarak daha da akıllı hale gelir. Geleceğin teknolojisini bugün evinize taşıyın.
-                </p>
+                <p>Kıtmir, OTA güncellemeleri ile sürekli gelişir. Bugün kurduğunuz robot, yarın yeni yetenekler kazanarak daha da akıllı hale gelir. Geleceğin teknolojisini bugün evinize taşıyın.</p>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
     <section id="features">
         <div class="container">
             <div class="section-heading-wrap"><h2>Ana Özellikler</h2></div>
             <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🎤</div>
-                    <h3>Sizinle Konuşur, Sizi Anlar</h3>
-                    <p>Kıtmir, sadece sesinizi duymakla kalmaz, söylediklerinizi anlar ve size anlamlı yanıtlar verir. Gelişmiş ses tanıma teknolojisi sayesinde onunla doğal bir sohbet edebilirsiniz.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👁️</div>
-                    <h3>Dünyayı Sizin Gözünüzden Görür</h3>
-                    <p>Entegre kamerası sayesinde çevresini görebilir ve bu görüntüleri sizinle paylaşabilir. Canlı görüntü akışı ile özel anlarınızı fotoğraflayabilirsiniz.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">😊</div>
-                    <h3>Duygularını İfade Eder, Sizinle Bağ Kurar</h3>
-                    <p>LED göstergeleri ve özel ses efektleri aracılığıyla mutluluğunu, merakını, şaşkınlığını veya üzüntüsünü ifade edebilir.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🧠</div>
-                    <h3>Bilgiye Anında Ulaşım</h3>
-                    <p>Kıtmir, internetin sınırsız bilgi dünyasına açılan kapınızdır. Sizin için anında Google'da arama yapabilir veya YouTube'da istediğiniz içeriği bulabilir.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🗺️</div>
-                    <h3>Yolunuzu Bulur, Size Rehberlik Eder</h3>
-                    <p>Harita entegrasyonu sayesinde gitmek istediğiniz yeri Kıtmir'e söyleyin, o da size en kısa ve en uygun rotayı tarif etsin.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">✨</div>
-                    <h3>Sizin Kıtmir'iniz: Kişiselleştirme</h3>
-                    <p>Kıtmir, tamamen size özel bir deneyim sunar. Onun ismini değiştirebilir, ses tonunu ayarlayabilir ve belirli tepkilerini kişiselleştirebilirsiniz.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⏰</div>
-                    <h3>Alarm Kurma &amp; Hatırlatıcı</h3>
-                    <p>Kıtmir, önemli anlarınızı hatırlatır. Alarm ayarlayabilir ve günlük görevlerinizi organize etmenize yardımcı olabilir.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌤️</div>
-                    <h3>Hava Durumu Bilgisi</h3>
-                    <p>Her an güncel hava durumu bilgisini sunar. Dışarı çıkmadan önce Kıtmir'e sorun, size en uygun kıyafet önerisinde bulunabilir.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📰</div>
-                    <h3>Son Haberler &amp; Güncel Bilgiler</h3>
-                    <p>Kıtmir, dünyada neler olup bittiğini size anında bildirir. Son haberler, teknoloji güncellemeleri ve spor sonuçlarını takip edebilirsiniz.</p>
-                </div>
+                <div class="feature-card"><div class="feature-icon">🎤</div><h3>Sizinle Konuşur, Sizi Anlar</h3><p>Kıtmir, sadece sesinizi duymakla kalmaz, söylediklerinizi anlar ve size anlamlı yanıtlar verir. Gelişmiş ses tanıma teknolojisi sayesinde onunla doğal bir sohbet edebilirsiniz.</p></div>
+                <div class="feature-card"><div class="feature-icon">👁️</div><h3>Dünyayı Sizin Gözünüzden Görür</h3><p>Entegre kamerası sayesinde çevresini görebilir ve bu görüntüleri sizinle paylaşabilir. Canlı görüntü akışı ile özel anlarınızı fotoğraflayabilirsiniz.</p></div>
+                <div class="feature-card"><div class="feature-icon">😊</div><h3>Duygularını İfade Eder, Sizinle Bağ Kurar</h3><p>LED göstergeleri ve özel ses efektleri aracılığıyla mutluluğunu, merakını, şaşkınlığını veya üzüntüsünü ifade edebilir.</p></div>
+                <div class="feature-card"><div class="feature-icon">🧠</div><h3>Bilgiye Anında Ulaşım</h3><p>Kıtmir, internetin sınırsız bilgi dünyasına açılan kapınızdır. Sizin için anında Google'da arama yapabilir veya YouTube'da istediğiniz içeriği bulabilir.</p></div>
+                <div class="feature-card"><div class="feature-icon">🗺️</div><h3>Yolunuzu Bulur, Size Rehberlik Eder</h3><p>Harita entegrasyonu sayesinde gitmek istediğiniz yeri Kıtmir'e söyleyin, o da size en kısa ve en uygun rotayı tarif etsin.</p></div>
+                <div class="feature-card"><div class="feature-icon">✨</div><h3>Sizin Kıtmir'iniz: Kişiselleştirme</h3><p>Kıtmir, tamamen size özel bir deneyim sunar. Onun ismini değiştirebilir, ses tonunu ayarlayabilir ve belirli tepkilerini kişiselleştirebilirsiniz.</p></div>
+                <div class="feature-card"><div class="feature-icon">⏰</div><h3>Alarm Kurma &amp; Hatırlatıcı</h3><p>Kıtmir, önemli anlarınızı hatırlatır. Alarm ayarlayabilir ve günlük görevlerinizi organize etmenize yardımcı olabilir.</p></div>
+                <div class="feature-card"><div class="feature-icon">🌤️</div><h3>Hava Durumu Bilgisi</h3><p>Her an güncel hava durumu bilgisini sunar. Dışarı çıkmadan önce Kıtmir'e sorun, size en uygun kıyafet önerisinde bulunabilir.</p></div>
+                <div class="feature-card"><div class="feature-icon">📰</div><h3>Son Haberler &amp; Güncel Bilgiler</h3><p>Kıtmir, dünyada neler olup bittiğini size anında bildirir. Son haberler, teknoloji güncellemeleri ve spor sonuçlarını takip edebilirsiniz.</p></div>
             </div>
         </div>
     </section>
 
-    <!-- Capabilities Section -->
     <section id="capabilities">
         <div class="container">
             <div class="section-heading-wrap"><h2>Yetenekler &amp; İşlevler</h2></div>
             <div class="capabilities-list">
-                <div class="capability-item">
-                    <h4>🗣️ Gelişmiş Ses Etkileşimi</h4>
-                    <p>Doğal sohbet, akıllı yanıtlar ve duygusal ton algılama ile tam bir iletişim deneyimi sunar.</p>
-                </div>
-                <div class="capability-item">
-                    <h4>👁️ Canlı Görüntü ve Görsel Zeka</h4>
-                    <p>Çevresini görebilir, fotoğraf çekebilir ve gördüğü nesneleri tanıyarak size bilgi verebilir.</p>
-                </div>
-                <div class="capability-item">
-                    <h4>😊 Duygusal İfade ve Bağ Kurma</h4>
-                    <p>LED göstergeleri ve ses efektleri aracılığıyla duygularını paylaşır, sizinle derin bir bağ kurar.</p>
-                </div>
-                <div class="capability-item">
-                    <h4>🧠 Bilgiye Anında Ulaşım</h4>
-                    <p>Sizin için anında Google ve YouTube üzerinde arama yapabilir, istediğiniz içeriği bulup gösterebilir.</p>
-                </div>
-                <div class="capability-item">
-                    <h4>🗺️ Harita ve Navigasyon</h4>
-                    <p>Harita entegrasyonu sayesinde en kısa ve uygun rotayı tarif eder, kaybolmanızı engeller.</p>
-                </div>
-                <div class="capability-item">
-                    <h4>📚 Dil Öğrenme ve Eğlence</h4>
-                    <p>Yeni diller öğrenmenize, kelime bilginizi geliştirmenize ve telaffuz pratiği yapmanıza yardımcı olur.</p>
-                </div>
-                <div class="capability-item">
-                    <h4>✨ Kişiselleştirme ve Özelleştirme</h4>
-                    <p>İsim, ses tonu ve tepkileri kişiselleştirilebilir. Tamamen size özel bir deneyim sunar.</p>
-                </div>
-                <div class="capability-item">
-                    <h4>🌐 Ağ Bağlantısı ve Güncelleme</h4>
-                    <p>WiFi üzerinden internet bağlantısı kurar ve OTA ile kablosuz firmware güncellemeleri alabilir.</p>
-                </div>
-                <div class="capability-item">
-                    <h4>⚙️ Geliştirilebilir Yapı</h4>
-                    <p>Sürekli yeni yetenekler kazanabilir ve mevcut özellikleri geliştirilebilir. Her zaman güncel kalır.</p>
-                </div>
+                <div class="capability-item"><h4>🗣️ Gelişmiş Ses Etkileşimi</h4><p>Doğal sohbet, akıllı yanıtlar ve duygusal ton algılama ile tam bir iletişim deneyimi sunar.</p></div>
+                <div class="capability-item"><h4>👁️ Canlı Görüntü ve Görsel Zeka</h4><p>Çevresini görebilir, fotoğraf çekebilir ve gördüğü nesneleri tanıyarak size bilgi verebilir.</p></div>
+                <div class="capability-item"><h4>😊 Duygusal İfade ve Bağ Kurma</h4><p>LED göstergeleri ve ses efektleri aracılığıyla duygularını paylaşır, sizinle derin bir bağ kurar.</p></div>
+                <div class="capability-item"><h4>🧠 Bilgiye Anında Ulaşım</h4><p>Sizin için anında Google ve YouTube üzerinde arama yapabilir, istediğiniz içeriği bulup gösterebilir.</p></div>
+                <div class="capability-item"><h4>🗺️ Harita ve Navigasyon</h4><p>Harita entegrasyonu sayesinde en kısa ve uygun rotayı tarif eder, kaybolmanızı engeller.</p></div>
+                <div class="capability-item"><h4>📚 Dil Öğrenme ve Eğlence</h4><p>Yeni diller öğrenmenize, kelime bilginizi geliştirmenize ve telaffuz pratiği yapmanıza yardımcı olur.</p></div>
+                <div class="capability-item"><h4>✨ Kişiselleştirme ve Özelleştirme</h4><p>İsim, ses tonu ve tepkileri kişiselleştirilebilir. Tamamen size özel bir deneyim sunar.</p></div>
+                <div class="capability-item"><h4>🌐 Ağ Bağlantısı ve Güncelleme</h4><p>WiFi üzerinden internet bağlantısı kurar ve OTA ile kablosuz firmware güncellemeleri alabilir.</p></div>
+                <div class="capability-item"><h4>⚙️ Geliştirilebilir Yapı</h4><p>Sürekli yeni yetenekler kazanabilir ve mevcut özellikleri geliştirilebilir. Her zaman güncel kalır.</p></div>
             </div>
         </div>
     </section>
 
-    <!-- Specifications Section -->
     <section id="specifications">
         <div class="container">
             <div class="section-heading-wrap"><h2>Teknik Bilgiler</h2></div>
             <table class="specs-table">
-                <thead>
-                    <tr>
-                        <th>Kategori</th>
-                        <th>Bilgi</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Kategori</th><th>Bilgi</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Platform</strong></td>
-                        <td>ESP32 (Espressif Systems) - Kıtmir'in beyni, hızlı ve verimli işlem gücü sunar.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>İşletim Sistemi</strong></td>
-                        <td>FreeRTOS - Görevleri sorunsuz yöneten gerçek zamanlı işletim sistemi.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Programlama Dili</strong></td>
-                        <td>C++ - Karmaşık algoritmaları ve hızlı tepkileri sağlayan güçlü bir dil.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Görsel Algı</strong></td>
-                        <td>Yüksek çözünürlüklü kamera - Dünyayı görmesini ve sizinle paylaşmasını sağlar.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>İşitsel Algı</strong></td>
-                        <td>Gelişmiş mikrofon ve ses işleme - Sesinizi net duymasını ve anlamasını sağlar.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Duygusal İfade</strong></td>
-                        <td>Dinamik LED ekran ve ses çıkışı - Duygularını görsel ve işitsel olarak ifade eder.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Güncelleme</strong></td>
-                        <td>OTA (Over-The-Air) - Yazılımı kablosuz olarak güncellenir, her zaman en yeni özelliklere sahip olur.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>İletişim Protokolleri</strong></td>
-                        <td>MCP, UART, HTTP, MQTT - Diğer cihazlarla güvenli ve etkili iletişim kurar.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Kişiselleştirme</strong></td>
-                        <td>Esnek yazılım mimarisi - İsim, ses ve tepkileri size özel hale getirmenizi sağlar.</td>
-                    </tr>
+                    <tr><td><strong>Platform</strong></td><td>ESP32 (Espressif Systems) - Kıtmir'in beyni, hızlı ve verimli işlem gücü sunar.</td></tr>
+                    <tr><td><strong>İşletim Sistemi</strong></td><td>FreeRTOS - Görevleri sorunsuz yöneten gerçek zamanlı işletim sistemi.</td></tr>
+                    <tr><td><strong>Programlama Dili</strong></td><td>C++ - Karmaşık algoritmaları ve hızlı tepkileri sağlayan güçlü bir dil.</td></tr>
+                    <tr><td><strong>Görsel Algı</strong></td><td>Yüksek çözünürlüklü kamera - Dünyayı görmesini ve sizinle paylaşmasını sağlar.</td></tr>
+                    <tr><td><strong>İşitsel Algı</strong></td><td>Gelişmiş mikrofon ve ses işleme - Sesinizi net duymasını ve anlamasını sağlar.</td></tr>
+                    <tr><td><strong>Duygusal İfade</strong></td><td>Dinamik LED ekran ve ses çıkışı - Duygularını görsel ve işitsel olarak ifade eder.</td></tr>
+                    <tr><td><strong>Güncelleme</strong></td><td>OTA (Over-The-Air) - Yazılımı kablosuz olarak güncellenir, her zaman en yeni özelliklere sahip olur.</td></tr>
+                    <tr><td><strong>İletişim Protokolleri</strong></td><td>MCP, UART, HTTP, MQTT - Diğer cihazlarla güvenli ve etkili iletişim kurar.</td></tr>
+                    <tr><td><strong>Kişiselleştirme</strong></td><td>Esnek yazılım mimarisi - İsim, ses ve tepkileri size özel hale getirmenizi sağlar.</td></tr>
                 </tbody>
             </table>
         </div>
     </section>
 
-    <!-- Suggestions Section -->
     <section id="suggestions">
         <div class="container">
             <div class="section-heading-wrap"><h2>Öneriler &amp; Geri Bildirim</h2></div>
             <div class="form-container">
-                <div class="form-info">
-                    Kıtmir'i daha iyi hale getirmek için önerilerinizi paylaşın. Önerileriniz doğrudan geliştirici ekibine iletilecektir.
-                </div>
-
+                <div class="form-info">Kıtmir'i daha iyi hale getirmek için önerilerinizi paylaşın. Önerileriniz doğrudan geliştirici ekibine iletilecektir.</div>
                 <div id="statusMessage"></div>
-
                 <form id="suggestionsForm" action="https://formspree.io/f/xojralgr" method="POST">
                     <input type="hidden" name="_subject" value="Kıtmir'den Yeni Öneri!">
-
                     <div class="form-group">
                         <label for="name">Ad Soyad *</label>
                         <input type="text" id="name" name="name" placeholder="Adınız ve soyadınız" required>
                     </div>
-
                     <div class="form-group">
                         <label for="suggestion">Öneriniz *</label>
                         <textarea id="suggestion" name="message" placeholder="Kıtmir'e ne eklenebilir? Hangi özellikler geliştirilmeli? Detaylı yazınız..." required></textarea>
                     </div>
-
                     <button type="submit" class="submit-btn" id="submitBtn">Öneriyi Gönder</button>
                 </form>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <p>© 2026 Kıtmir Yapay Zeka Asistanı. Tüm hakları saklıdır.</p>
-        <p style="margin-top: 8px; opacity: 0.8;">Kıtmir, yapay zeka ve robotik teknolojisinin gücünü herkesin erişimine sunmak için geliştirilmiştir.</p>
+        <p style="margin-top:8px;opacity:0.8;">Kıtmir, yapay zeka ve robotik teknolojisinin gücünü herkesin erişimine sunmak için geliştirilmiştir.</p>
     </footer>
 
     <script>
@@ -666,14 +496,8 @@
             btn.innerText = "Gönderiliyor...";
             status.style.display = "none";
             status.className = "";
-
             try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: new FormData(form),
-                    headers: { 'Accept': 'application/json' }
-                });
-
+                const response = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
                 if (response.ok) {
                     status.innerText = "✓ Öneriniz başarıyla gönderildi! Teşekkür ederiz.";
                     status.className = "status-success";
